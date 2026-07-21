@@ -1,0 +1,11 @@
+{
+	"overrides": [
+		{
+			"files": ["*.css"],
+			"options": {
+				"useTabs": true,
+				"tabWidth": 4
+			}
+		}
+	]
+}
