@@ -1,12 +1,12 @@
 <script>
-	import Icon from '@iconify/svelte';
+	import IconMoon from '~icons/boxicons/moon';
+	import IconSun from '~icons/boxicons/sun';
 	import { onMount } from 'svelte';
 
 	/** @typedef {'light' | 'dark'} Theme */
 
 	let theme = $state(/** @type {Theme} */ ('light'));
 
-	const icon = $derived(theme === 'dark' ? 'boxicons:moon' : 'boxicons:sun');
 	const label = $derived(
 		theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode',
 	);
@@ -44,7 +44,11 @@
 </script>
 
 <button type="button" class="theme-toggle" onclick={toggle} aria-label={label}>
-	<Icon {icon} width="1.25em" height="1.25em" aria-hidden="true" />
+	{#if theme === 'dark'}
+		<IconMoon width="2em" height="2em" aria-hidden="true" />
+	{:else}
+		<IconSun width="2em" height="2em" aria-hidden="true" />
+	{/if}
 </button>
 
 <style>
