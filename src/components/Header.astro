@@ -1,4 +1,5 @@
 ---
+import { NAV_ROUTES } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 import ThemeToggle from './ThemeToggle.svelte';
 ---
@@ -7,10 +8,9 @@ import ThemeToggle from './ThemeToggle.svelte';
 	<nav>
 		<h2><a href="/">BD</a></h2>
 			<div class="internal-links">
-				<HeaderLink href="/">Home</HeaderLink>
-				<HeaderLink href="/blog">Blog</HeaderLink>
-				<HeaderLink href="/about">About</HeaderLink>
-				<HeaderLink href="/uses">Uses</HeaderLink>
+				{NAV_ROUTES.map(({ href, label }) => (
+					<HeaderLink href={href}>{label}</HeaderLink>
+				))}
 			</div>
 			<ThemeToggle client:load />
 	</nav>
