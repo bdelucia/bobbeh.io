@@ -34,7 +34,7 @@
 }
 
 body {
-	font-family: var(--font-atkinson);
+	font-family: var(--font-geist);
 	margin: 0;
 	padding: 0;
 	text-align: left;
@@ -109,6 +109,12 @@ img {
 	height: auto;
 	border-radius: 8px;
 }
+code,
+kbd,
+samp,
+pre {
+	font-family: var(--font-caskaydia);
+}
 code {
 	padding: 2px 5px;
 	background-color: rgb(var(--gray-light));
@@ -120,6 +126,7 @@ pre {
 }
 pre > code {
 	all: unset;
+	font-family: var(--font-caskaydia);
 }
 blockquote {
 	border-left: 4px solid var(--accent);
