@@ -33,7 +33,7 @@ export default defineConfig({
     {
       provider: fontProviders.fontsource(),
       name: "Open Sans",
-      cssVariable: "--font-open-sans",
+      cssVariable: "--font-sans",
       fallbacks: ["sans-serif"],
       // Variable font range (Open Sans max weight is 800).
       weights: ["300 800"],
