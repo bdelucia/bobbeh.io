@@ -4,46 +4,39 @@ import HeaderLink from './HeaderLink.astro';
 import ThemeToggle from './ThemeToggle.svelte';
 ---
 
-<header>
+<header class="site-header">
 	<nav>
-		<h2><a href="/">BD</a></h2>
-			<div class="internal-links">
-				{NAV_ROUTES.map(({ href, label }) => (
-					<HeaderLink href={href}>{label}</HeaderLink>
-				))}
-			</div>
-			<ThemeToggle client:load />
+		<h2><a href="/" class="site-logo">BD</a></h2>
+		<div class="internal-links">
+			{NAV_ROUTES.map(({ href, label }) => (
+				<HeaderLink href={href}>{label}</HeaderLink>
+			))}
+		</div>
+		<ThemeToggle client:load />
 	</nav>
 </header>
-<style>
-	header {
-		margin: 0;
-		padding: 0 1em;
-		background: var(--background);
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
-	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
+
+<script>
+	function normalizePath(pathname: string) {
+		if (pathname.length > 1 && pathname.endsWith('/')) {
+			return pathname.slice(0, -1);
+		}
+		return pathname || '/';
 	}
 
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
+	function updateNavLinks() {
+		const pathname = normalizePath(window.location.pathname);
+		const subpath = pathname.match(/[^/]+/g);
+
+		document.querySelectorAll<HTMLAnchorElement>('.internal-links .nav-link').forEach((link) => {
+			const href = link.getAttribute('href');
+			if (!href) return;
+
+			const isActive =
+				href === pathname || href === '/' + (subpath?.[0] || '');
+			link.classList.toggle('active', isActive);
+		});
 	}
-	nav {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-	nav a {
-		padding: 1em 0.5em;
-		color: rgb(var(--black));
-		border-bottom: 4px solid transparent;
-		text-decoration: none;
-	}
-	nav a.active {
-		text-decoration: none;
-		border-bottom-color: var(--accent);
-	}
-</style>
+
+	document.addEventListener('astro:page-load', updateNavLinks);
+</script>

@@ -60,17 +60,17 @@
 		margin: 0;
 		border: none;
 		background: transparent;
-		color: rgb(var(--black));
+		color: var(--text-primary);
 		cursor: pointer;
 		border-radius: 0.25em;
 	}
 
 	.theme-toggle:hover {
-		color: var(--accent);
+		color: var(--accent-primary-hover);
 	}
 
 	.theme-toggle:focus-visible {
-		outline: 2px solid var(--accent);
+		outline: 2px solid var(--accent-primary);
 		outline-offset: 2px;
 	}
 </style>
