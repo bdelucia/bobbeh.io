@@ -32,10 +32,11 @@ export default defineConfig({
   fonts: [
     {
       provider: fontProviders.fontsource(),
-      name: "Geist",
-      cssVariable: "--font-geist",
+      name: "Open Sans",
+      cssVariable: "--font-open-sans",
       fallbacks: ["sans-serif"],
-      weights: ["600", "700", "800", "900"],
+      // Variable font range (Open Sans max weight is 800).
+      weights: ["300 800"],
       styles: ["normal"],
     },
     {
