@@ -35,6 +35,8 @@ export default defineConfig({
       name: "Geist",
       cssVariable: "--font-geist",
       fallbacks: ["sans-serif"],
+      weights: ["600", "700", "800", "900"],
+      styles: ["normal"],
     },
     {
       provider: fontProviders.local(),

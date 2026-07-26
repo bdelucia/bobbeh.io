@@ -2,11 +2,22 @@
 import { NAV_ROUTES } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 import ThemeToggle from './ThemeToggle.svelte';
+
+const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
+const isHome = !pathname || pathname === '/' || pathname.replace(/\/+$/, '') === '';
 ---
 
 <header class="site-header">
 	<nav>
-		<h2><a href="/" class="site-logo">BD</a></h2>
+		<h2>
+			<a
+				href="/"
+				class:list={['site-logo', { active: isHome }]}
+				aria-current={isHome ? 'page' : undefined}
+			>
+				BD
+			</a>
+		</h2>
 		<div class="internal-links">
 			{NAV_ROUTES.map(({ href, label }) => (
 				<HeaderLink href={href}>{label}</HeaderLink>
@@ -24,9 +35,23 @@ import ThemeToggle from './ThemeToggle.svelte';
 		return pathname || '/';
 	}
 
+	function setActive(link: HTMLAnchorElement, isActive: boolean) {
+		link.classList.toggle('active', isActive);
+		if (isActive) {
+			link.setAttribute('aria-current', 'page');
+		} else {
+			link.removeAttribute('aria-current');
+		}
+	}
+
 	function updateNavLinks() {
 		const pathname = normalizePath(window.location.pathname);
 		const subpath = pathname.match(/[^/]+/g);
+
+		const logo = document.querySelector<HTMLAnchorElement>('.site-logo');
+		if (logo) {
+			setActive(logo, pathname === '/');
+		}
 
 		document.querySelectorAll<HTMLAnchorElement>('.internal-links .nav-link').forEach((link) => {
 			const href = link.getAttribute('href');
@@ -34,9 +59,17 @@ import ThemeToggle from './ThemeToggle.svelte';
 
 			const isActive =
 				href === pathname || href === '/' + (subpath?.[0] || '');
-			link.classList.toggle('active', isActive);
+			setActive(link, isActive);
 		});
 	}
 
 	document.addEventListener('astro:page-load', updateNavLinks);
+
+	document.addEventListener('click', (event) => {
+		const target = event.target;
+		if (!(target instanceof Element)) return;
+		if (target.closest('.site-logo.active, .internal-links .nav-link.active')) {
+			event.preventDefault();
+		}
+	});
 </script>

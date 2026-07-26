@@ -81,13 +81,14 @@ main {
 
 .site-header h2 {
 	margin: 0;
-	font-size: 1em;
+	font-size: 1.25em;
+	font-weight: 700;
 }
 
 .site-logo,
 .nav-link {
 	display: inline-block;
-	padding: 1em 0.5em;
+	padding: 0.75em 0.5em;
 	color: var(--text-primary);
 	text-decoration: none;
 	transition:
@@ -107,6 +108,12 @@ main {
 .nav-link:hover {
 	background-color: var(--bg-surface-hover);
 	color: var(--accent-primary);
+}
+
+.site-logo.active,
+.nav-link.active {
+	cursor: default;
+	pointer-events: none;
 }
 
 .nav-link.active {
