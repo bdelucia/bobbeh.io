@@ -14,14 +14,14 @@
 	--line-height-normal: 1.5;
 	--line-height-relaxed: 1.75;
 
-	--space-1: 0.25rem;
-	--space-2: 0.5rem;
-	--space-3: 0.75rem;
-	--space-4: 1rem;
-	--space-5: 1.5rem;
-	--space-6: 2rem;
-	--space-7: 3rem;
-	--space-8: 4rem;
+	--size-1: 0.25rem;
+	--size-2: 0.5rem;
+	--size-3: 0.75rem;
+	--size-4: 1rem;
+	--size-5: 1.5rem;
+	--size-6: 2rem;
+	--size-7: 3rem;
+	--size-8: 4rem;
 
 	--radius-sm: 0.25rem;
 	--radius-md: 0.5rem;
@@ -79,10 +79,10 @@ body {
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background-color: var(--bg-base);
+	background-color: var(--bg-base, #f6f5f4);
 	word-wrap: break-word;
 	overflow-wrap: break-word;
-	color: var(--text-primary);
+	color: var(--text-primary, #1c1b22);
 	font-size: 20px;
 	line-height: 1.7;
 }
@@ -92,17 +92,17 @@ main {
 	width: 100%;
 	box-sizing: border-box;
 	margin: 0;
-	padding: 3em 1em;
-	background-color: var(--bg-base);
+	padding: var(--size-7, 3rem) var(--size-4, 1rem);
+	background-color: var(--bg-base, #f6f5f4);
 }
 
 .site-header {
 	position: relative;
 	z-index: 1;
 	margin: 0;
-	padding: 0 1em;
-	background: var(--bg-surface);
-	border-bottom: 1px solid var(--border-subtle);
+	padding: 0 var(--size-4, 1rem);
+	background: var(--bg-surface, #eae9e7);
+	border-bottom: 1px solid var(--border-subtle, #d1cfcd);
 }
 
 .site-header nav {
@@ -113,15 +113,15 @@ main {
 
 .site-header h2 {
 	margin: 0;
-	font-size: 1.25em;
-	font-weight: 700;
+	font-size: var(--font-size-lg, 1.25rem);
+	font-weight: var(--font-weight-bold, 700);
 }
 
 .site-logo,
 .nav-link {
 	display: inline-block;
-	padding: 0.75em 0.5em;
-	color: var(--text-primary);
+	padding: var(--size-3, 0.75rem) var(--size-2, 0.5rem);
+	color: var(--text-primary, #1c1b22);
 	text-decoration: none;
 	transition:
 		background-color 0.15s ease,
@@ -138,8 +138,8 @@ main {
 
 .site-logo:hover,
 .nav-link:hover {
-	background-color: var(--bg-surface-hover);
-	color: var(--accent-primary);
+	background-color: var(--bg-surface-hover, #dfdddb);
+	color: var(--accent-primary, #3584e4);
 }
 
 .site-logo.active,
@@ -150,7 +150,7 @@ main {
 
 .nav-link.active {
 	font-weight: bolder;
-	border-bottom-color: var(--border-accent);
+	border-bottom-color: var(--border-accent, #3584e4);
 }
 
 h1,
@@ -159,8 +159,8 @@ h3,
 h4,
 h5,
 h6 {
-	margin: 0 0 0.5rem 0;
-	color: var(--text-primary);
+	margin: 0 0 var(--size-2, 0.5rem) 0;
+	color: var(--text-primary, #1c1b22);
 	line-height: 1.2;
 }
 h1 {
@@ -176,30 +176,30 @@ h4 {
 	font-size: 1.563em;
 }
 h5 {
-	font-size: 1.25em;
+	font-size: var(--font-size-lg, 1.25rem);
 }
 strong,
 b {
-	font-weight: 700;
+	font-weight: var(--font-weight-bold, 700);
 }
 a {
-	color: var(--accent-primary);
+	color: var(--accent-primary, #3584e4);
 }
 a:hover {
-	color: var(--accent-primary-hover);
+	color: var(--accent-primary-hover, #266bbd);
 }
 p {
-	margin-bottom: 1em;
+	margin-bottom: var(--size-4, 1rem);
 }
 .prose p {
-	margin-bottom: 2em;
+	margin-bottom: var(--size-6, 2rem);
 }
 textarea {
 	width: 100%;
-	font-size: 16px;
+	font-size: var(--font-size-base, 1rem);
 }
 input {
-	font-size: 16px;
+	font-size: var(--font-size-base, 1rem);
 }
 table {
 	width: 100%;
@@ -207,7 +207,7 @@ table {
 img {
 	max-width: 100%;
 	height: auto;
-	border-radius: 8px;
+	border-radius: var(--radius-md, 0.5rem);
 }
 code,
 kbd,
@@ -217,33 +217,33 @@ pre {
 }
 code {
 	padding: 2px 5px;
-	background-color: var(--bg-surface);
+	background-color: var(--bg-surface, #eae9e7);
 	border-radius: 2px;
 }
 pre {
-	padding: 1.5em;
-	border-radius: 8px;
+	padding: var(--size-5, 1.5rem);
+	border-radius: var(--radius-md, 0.5rem);
 }
 pre > code {
 	all: unset;
 	font-family: var(--font-caskaydia);
 }
 blockquote {
-	border-left: 4px solid var(--border-accent);
+	border-left: 4px solid var(--border-accent, #3584e4);
 	padding: 0 0 0 20px;
 	margin: 0;
 	font-size: 1.333em;
 }
 hr {
 	border: none;
-	border-top: 1px solid var(--border-subtle);
+	border-top: 1px solid var(--border-subtle, #d1cfcd);
 }
 @media (max-width: 720px) {
 	body {
 		font-size: 18px;
 	}
 	main {
-		padding: 1em;
+		padding: var(--size-4, 1rem);
 	}
 }
 

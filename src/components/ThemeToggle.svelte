@@ -56,21 +56,21 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		padding: 0.5em;
+		padding: var(--size-2, 0.5rem);
 		margin: 0;
 		border: none;
 		background: transparent;
-		color: var(--text-primary);
+		color: var(--text-primary, #1c1b22);
 		cursor: pointer;
-		border-radius: 0.25em;
+		border-radius: var(--radius-sm, 0.25rem);
 	}
 
 	.theme-toggle:hover {
-		color: var(--accent-primary-hover);
+		color: var(--accent-primary-hover, #266bbd);
 	}
 
 	.theme-toggle:focus-visible {
-		outline: 2px solid var(--accent-primary);
+		outline: 2px solid var(--accent-primary, #3584e4);
 		outline-offset: 2px;
 	}
 </style>
