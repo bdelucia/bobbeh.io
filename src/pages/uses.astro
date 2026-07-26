@@ -2,9 +2,9 @@
 import { getEntry, render } from 'astro:content';
 import ContentPage from '../layouts/ContentPage.astro';
 
-const page = await getEntry('about', 'index');
+const page = await getEntry('uses', 'index');
 if (!page) {
-	throw new Error('About page content not found.');
+	throw new Error('Uses page content not found.');
 }
 
 const { Content } = await render(page);

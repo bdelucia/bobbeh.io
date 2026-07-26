@@ -1,0 +1,43 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = title } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+	<article>
+		<div class="prose">
+			<header class="title">
+				<h1>{title}</h1>
+				<hr />
+			</header>
+			<slot />
+		</div>
+	</article>
+</BaseLayout>
+
+<style>
+	.prose {
+		width: 720px;
+		max-width: calc(100% - var(--size-6, 2rem));
+		margin: auto;
+		padding: var(--size-4, 1rem);
+		color: var(--text-primary, #1c1b22);
+	}
+
+	.title {
+		margin-bottom: var(--size-4, 1rem);
+		padding: var(--size-4, 1rem) 0;
+		text-align: center;
+		line-height: 1;
+	}
+
+	.title h1 {
+		margin: 0 0 var(--size-2, 0.5rem) 0;
+	}
+</style>

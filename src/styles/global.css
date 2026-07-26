@@ -199,6 +199,27 @@ p {
 .prose p {
 	margin-bottom: var(--size-6, 2rem);
 }
+
+.tag-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--size-2, 0.5rem);
+	list-style: none;
+	margin: var(--size-2, 0.5rem) 0;
+	padding: 0;
+}
+
+.tag {
+	display: inline-block;
+	padding: var(--size-1, 0.25rem) var(--size-3, 0.75rem);
+	border-radius: var(--radius-full, 9999px);
+	background: var(--accent-secondary, #009999);
+	color: var(--text-inverse, #f6f5f4);
+	font-size: var(--font-size-sm, 0.75rem);
+	font-weight: var(--font-weight-medium, 500);
+	line-height: var(--line-height-tight, 1.25);
+}
+
 textarea {
 	width: 100%;
 	font-size: var(--font-size-base, 1rem);
