@@ -7,6 +7,10 @@ function normalizePath(pathname: string) {
 	return pathname || '/';
 }
 
+function isHome(pathname: string) {
+	return normalizePath(pathname) === '/';
+}
+
 function isBlogPost(pathname: string) {
 	const path = normalizePath(pathname);
 	return path.startsWith('/blog/');
@@ -34,8 +38,20 @@ function routeIndex(pathname: string) {
 document.addEventListener('astro:before-preparation', (event) => {
 	const from = normalizePath(event.from.pathname);
 	const to = normalizePath(event.to.pathname);
+	const fromHome = isHome(from);
+	const toHome = isHome(to);
 	const fromPost = isBlogPost(from);
 	const toPost = isBlogPost(to);
+
+	// Home sits above the nav — use a vertical slide.
+	if (fromHome && !toHome) {
+		event.direction = 'down';
+		return;
+	}
+	if (!fromHome && toHome) {
+		event.direction = 'up';
+		return;
+	}
 
 	// Blog posts are nested under /blog — use a vertical slide.
 	if (!fromPost && toPost) {

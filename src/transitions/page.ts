@@ -23,7 +23,7 @@ const move = (name: string) =>
 		fillMode: 'both',
 	}) as const;
 
-/** Horizontal for top-level nav; vertical for blog post enter/exit. */
+/** Horizontal for top-level nav; vertical for home and blog post enter/exit. */
 export const pageTransition = {
 	forwards: {
 		old: [fadeOut, move('slideToLeft')],
