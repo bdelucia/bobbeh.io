@@ -11,12 +11,12 @@ function isHome(pathname: string) {
 	return normalizePath(pathname) === '/';
 }
 
-function isBlogPost(pathname: string) {
+function isArticlePost(pathname: string) {
 	const path = normalizePath(pathname);
-	return path.startsWith('/blog/');
+	return path.startsWith('/articles/');
 }
 
-/** Index in NAV_ROUTES, or -1. Nested paths (e.g. /blog/slug) match their parent nav item. */
+/** Index in NAV_ROUTES, or -1. Nested paths (e.g. /articles/slug) match their parent nav item. */
 function routeIndex(pathname: string) {
 	const path = normalizePath(pathname);
 	let best = -1;
@@ -40,8 +40,8 @@ document.addEventListener('astro:before-preparation', (event) => {
 	const to = normalizePath(event.to.pathname);
 	const fromHome = isHome(from);
 	const toHome = isHome(to);
-	const fromPost = isBlogPost(from);
-	const toPost = isBlogPost(to);
+	const fromPost = isArticlePost(from);
+	const toPost = isArticlePost(to);
 
 	// Home sits above the nav — use a vertical slide.
 	if (fromHome && !toHome) {
@@ -53,7 +53,7 @@ document.addEventListener('astro:before-preparation', (event) => {
 		return;
 	}
 
-	// Blog posts are nested under /blog — use a vertical slide.
+	// Articles are nested under /articles — use a vertical slide.
 	if (!fromPost && toPost) {
 		event.direction = 'down';
 		return;

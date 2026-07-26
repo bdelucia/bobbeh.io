@@ -23,7 +23,7 @@ const move = (name: string) =>
 		fillMode: 'both',
 	}) as const;
 
-/** Horizontal for top-level nav; vertical for home and blog post enter/exit. */
+/** Horizontal for top-level nav; vertical for home and article enter/exit. */
 export const pageTransition = {
 	forwards: {
 		old: [fadeOut, move('slideToLeft')],
@@ -33,12 +33,12 @@ export const pageTransition = {
 		old: [fadeOut, move('slideToRight')],
 		new: [fadeIn, move('slideFromLeft')],
 	},
-	/** Into a nested route (e.g. /blog → /blog/slug) */
+	/** Into a nested route (e.g. /articles → /articles/slug) */
 	down: {
 		old: [fadeOut, move('slideToTop')],
 		new: [fadeIn, move('slideFromBottom')],
 	},
-	/** Out of a nested route (e.g. /blog/slug → /blog) */
+	/** Out of a nested route (e.g. /articles/slug → /articles) */
 	up: {
 		old: [fadeOut, move('slideToBottom')],
 		new: [fadeIn, move('slideFromTop')],

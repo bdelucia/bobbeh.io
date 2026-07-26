@@ -153,6 +153,11 @@ main {
 	border-bottom-color: var(--border-accent, #3584e4);
 }
 
+.internal-links {
+	display: flex;
+	gap: var(--size-4, 0.5rem);
+}
+
 h1,
 h2,
 h3,

@@ -6,7 +6,7 @@ export const SITE_DESCRIPTION = "Personal website of Bobby DeLucia";
 
 /** Left-to-right nav order; used for route-relative view transition direction. */
 export const NAV_ROUTES = [
-	{ href: "/blog", label: "Blog" },
+	{ href: "/articles", label: "Articles" },
 	{ href: "/about", label: "About" },
 	{ href: "/uses", label: "Uses" },
 ] as const;
