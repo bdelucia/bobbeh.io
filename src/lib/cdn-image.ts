@@ -1,6 +1,15 @@
 /** Hostname for the R2 public custom domain. */
 const CDN_HOST = "cdn.bobbeh.io";
 
+/**
+ * Set `CLOUDFLARE_IMAGES=true` after enabling Image Transformations on the
+ * Cloudflare zone that owns cdn.bobbeh.io. Until then, URLs stay as originals
+ * (`/cdn-cgi/image/...` 404s when the product is off).
+ */
+const transformsEnabled =
+	import.meta.env.CLOUDFLARE_IMAGES === "true" ||
+	import.meta.env.CLOUDFLARE_IMAGES === "1";
+
 export type CdnImageOptions = {
 	width?: number;
 	height?: number;
@@ -29,7 +38,7 @@ function sourcePath(pathname: string): string {
 }
 
 /**
- * Rewrite a CDN object URL through Cloudflare Image Transformations.
+ * Optionally rewrite a CDN object URL through Cloudflare Image Transformations.
  * Originals stay as uploaded in R2; format/size conversion is on-the-fly.
  *
  * @see https://developers.cloudflare.com/images/transform-images/transform-via-url/
@@ -38,7 +47,15 @@ export function optimizeCdnImageUrl(
 	src: string,
 	options: CdnImageOptions = {},
 ): string {
-	if (!src || !isCdnUrl(src)) return src;
+	if (!src || !isCdnUrl(src) || !transformsEnabled) {
+		// If transforms were previously baked into a URL, strip them so the
+		// object path still resolves while Images is disabled.
+		if (src && isCdnUrl(src) && src.includes("/cdn-cgi/image/")) {
+			const url = new URL(src);
+			return `${url.origin}${sourcePath(url.pathname)}`;
+		}
+		return src;
+	}
 
 	const {
 		width,
