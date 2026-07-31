@@ -6,7 +6,25 @@ export const SITE_DESCRIPTION = "Personal website of Bobby DeLucia";
 
 /** Left-to-right nav order; used for route-relative view transition direction. */
 export const NAV_ROUTES = [
-	{ href: "/articles", label: "Articles" },
-	{ href: "/about", label: "About" },
-	{ href: "/uses", label: "Uses" },
+  { href: "/articles", label: "Articles" },
+  { href: "/about", label: "About" },
+  { href: "/uses", label: "Uses" },
+] as const;
+
+export const SOCIAL_LINKS = [
+  {
+    href: "https://x.com/bibborto",
+    label: "X (Twitter)",
+    platform: "x",
+  },
+  {
+    href: "https://www.linkedin.com/in/bdeluciajr",
+    label: "LinkedIn",
+    platform: "linkedin",
+  },
+  {
+    href: "https://github.com/bdelucia",
+    label: "GitHub",
+    platform: "github",
+  },
 ] as const;
