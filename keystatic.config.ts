@@ -13,7 +13,7 @@ export default config({
     articles: collection({
       label: "Articles",
       slugField: "title",
-      path: "src/content/articles/*",
+      path: "src/content/articles/*/",
       format: { contentField: "content" },
       columns: ["title", "status", "pubDate"],
       schema: {
@@ -41,9 +41,17 @@ export default config({
         }),
         heroImage: fields.image({
           label: "Hero Image",
+          directory: "src/content/articles",
+          publicPath: "./",
         }),
         content: fields.markdoc({
           label: "Content",
+          options: {
+            image: {
+              directory: "src/content/articles",
+              publicPath: "./",
+            },
+          },
         }),
       },
     }),
