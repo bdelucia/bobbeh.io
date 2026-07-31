@@ -29,14 +29,20 @@ const { title, description, startDate, endDate, heroImage } = Astro.props;
 
 <style>
 	.hero-image {
+		display: flex;
+		align-items: center;
 		width: 100%;
 		max-width: 1020px;
+		max-height: 510px;
 		margin: 0 auto;
-	}
-	.hero-image img {
-		display: block;
-		margin: 0 auto;
+		overflow: hidden;
 		border-radius: var(--radius-lg, 0.75rem);
+	}
+	.hero-image :global(img) {
+		display: block;
+		width: 100%;
+		height: auto;
+		flex-shrink: 0;
 	}
 	.prose {
 		width: 720px;

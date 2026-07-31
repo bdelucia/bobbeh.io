@@ -61,12 +61,17 @@ const href = `/articles/${article.id}/`;
 		color: var(--accent-primary, #3584e4);
 	}
 
-	.article-card__image img {
+	.article-card__image {
+		aspect-ratio: 2 / 1;
+		overflow: hidden;
+		border-radius: var(--radius-lg, 0.75rem) var(--radius-lg, 0.75rem) 0 0;
+	}
+
+	.article-card__image :global(img) {
 		display: block;
 		width: 100%;
-		aspect-ratio: 2 / 1;
+		height: 100%;
 		object-fit: cover;
-		border-radius: var(--radius-lg, 0.75rem) var(--radius-lg, 0.75rem) 0 0;
 	}
 
 	.article-card__body {
