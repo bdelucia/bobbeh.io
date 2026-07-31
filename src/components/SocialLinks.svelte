@@ -26,10 +26,8 @@
 		display: flex;
 		justify-content: center;
 		gap: var(--size-4, 1rem);
-		margin-top: var(--size-4, 1rem);
 	}
 	.social-links a {
-		display: inline-flex;
 		text-decoration: none;
 		color: var(--text-muted, #55545f);
 	}
