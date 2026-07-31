@@ -1,4 +1,4 @@
-import { useId, useState, type CSSProperties } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import type { BasicFormField, FormFieldInputProps } from "@keystatic/core";
 
 type R2ImageValue = string | null;
@@ -10,6 +10,29 @@ type R2ImageOptions = {
 	folder?: string;
 };
 
+/** Survives dialog/component unmount so uploads can finish and notify listeners. */
+type PendingUpload = {
+	promise: Promise<string>;
+	previewUrl: string;
+	listeners: Set<(result: { url?: string; error?: string }) => void>;
+};
+
+const pendingUploads = new Map<string, PendingUpload>();
+
+export function getPendingUpload(id: string) {
+	return pendingUploads.get(id);
+}
+
+function notify(
+	pending: PendingUpload,
+	result: { url?: string; error?: string },
+) {
+	for (const listener of pending.listeners) {
+		listener(result);
+	}
+	pending.listeners.clear();
+}
+
 export async function uploadToR2(file: File, folder: string) {
 	// Prefer direct-to-R2 for large files (avoids host body-size limits).
 	// Falls back to server upload when CORS isn't configured yet.
@@ -17,11 +40,69 @@ export async function uploadToR2(file: File, folder: string) {
 		try {
 			return await uploadViaPresign(file, folder);
 		} catch (error) {
-			console.warn("Presigned R2 upload failed, falling back to server upload:", error);
+			console.warn(
+				"Presigned R2 upload failed, falling back to server upload:",
+				error,
+			);
 		}
 	}
 
 	return uploadViaServer(file, folder);
+}
+
+/**
+ * Starts an upload that continues even if the React tree unmounts (e.g. Done).
+ * `onSuccess` / `onError` are kept on the pending upload (not tied to React mount).
+ */
+export function startBackgroundUpload(
+	file: File,
+	folder: string,
+	callbacks?: {
+		onSuccess?: (url: string) => void;
+		onError?: (message: string) => void;
+	},
+) {
+	const id = crypto.randomUUID();
+	const previewUrl = URL.createObjectURL(file);
+	const listeners = new Set<(result: { url?: string; error?: string }) => void>();
+
+	const promise = uploadToR2(file, folder)
+		.then((url) => {
+			callbacks?.onSuccess?.(url);
+			const pending = pendingUploads.get(id);
+			if (pending) {
+				notify(pending, { url });
+				URL.revokeObjectURL(pending.previewUrl);
+				pendingUploads.delete(id);
+			}
+			return url;
+		})
+		.catch((error) => {
+			const message = error instanceof Error ? error.message : "Upload failed";
+			callbacks?.onError?.(message);
+			const pending = pendingUploads.get(id);
+			if (pending) {
+				notify(pending, { error: message });
+				URL.revokeObjectURL(pending.previewUrl);
+				pendingUploads.delete(id);
+			}
+			throw error;
+		});
+
+	pendingUploads.set(id, { promise, previewUrl, listeners });
+	return { id, previewUrl, promise };
+}
+
+export function watchUpload(
+	id: string,
+	listener: (result: { url?: string; error?: string }) => void,
+) {
+	const pending = pendingUploads.get(id);
+	if (!pending) return () => {};
+	pending.listeners.add(listener);
+	return () => {
+		pending.listeners.delete(listener);
+	};
 }
 
 async function uploadViaServer(file: File, folder: string) {
@@ -87,35 +168,66 @@ function R2ImageInput(
 	},
 ) {
 	const inputId = useId();
-	const [uploading, setUploading] = useState(false);
+	const onChangeRef = useRef(props.onChange);
+	onChangeRef.current = props.onChange;
+
+	const [uploadId, setUploadId] = useState<string | null>(null);
+	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 	const [error, setError] = useState<string | null>(null);
 
-	const onFileChange = async (file: File | undefined) => {
+	const uploading = uploadId !== null;
+	const displaySrc = previewUrl ?? props.value;
+
+	useEffect(() => {
+		if (!uploadId) return;
+		return watchUpload(uploadId, (result) => {
+			setUploadId(null);
+			setPreviewUrl(null);
+			if (result.url) {
+				onChangeRef.current(result.url);
+				setError(null);
+			} else if (result.error) {
+				setError(result.error);
+			}
+		});
+	}, [uploadId]);
+
+	const onFileChange = (file: File | undefined) => {
 		if (!file) return;
 		setError(null);
-		setUploading(true);
-		try {
-			const url = await uploadToR2(file, props.folder);
-			props.onChange(url);
-		} catch (err) {
-			setError(err instanceof Error ? err.message : "Upload failed");
-		} finally {
-			setUploading(false);
-		}
+		const { id, previewUrl: preview } = startBackgroundUpload(
+			file,
+			props.folder,
+			{
+				onSuccess: (url) => onChangeRef.current(url),
+				onError: (message) => setError(message),
+			},
+		);
+		setUploadId(id);
+		setPreviewUrl(preview);
 	};
 
 	return (
 		<div style={styles.field}>
-			<label htmlFor={inputId} style={styles.label}>
-				{props.label}
-			</label>
-			{props.description ? (
-				<p style={styles.description}>{props.description}</p>
-			) : null}
+			<div style={styles.labelBlock}>
+				<label htmlFor={inputId} style={styles.label}>
+					{props.label}
+				</label>
+				{props.description ? (
+					<p style={styles.description}>{props.description}</p>
+				) : null}
+			</div>
 
-			{props.value ? (
+			{displaySrc ? (
 				<div style={styles.previewWrap}>
-					<img src={props.value} alt="" style={styles.preview} />
+					<div style={styles.previewFrame}>
+						<img src={displaySrc} alt="" style={styles.preview} />
+						{uploading ? (
+							<div style={styles.overlay}>
+								<span style={styles.overlayText}>Uploading to R2…</span>
+							</div>
+						) : null}
+					</div>
 					<div style={styles.actions}>
 						<label style={styles.button}>
 							{uploading ? "Uploading…" : "Replace"}
@@ -126,25 +238,36 @@ function R2ImageInput(
 								disabled={uploading}
 								style={styles.hiddenInput}
 								onChange={(event) => {
-									void onFileChange(event.target.files?.[0]);
+									onFileChange(event.target.files?.[0]);
 									event.target.value = "";
 								}}
 							/>
 						</label>
 						<button
 							type="button"
-							style={styles.buttonSecondary}
+							style={styles.button}
 							disabled={uploading}
-							onClick={() => props.onChange(null)}
+							onClick={() => {
+								setPreviewUrl(null);
+								setUploadId(null);
+								props.onChange(null);
+							}}
 						>
 							Remove
 						</button>
 					</div>
-					<p style={styles.url}>{props.value}</p>
+					{props.value && !props.value.startsWith("blob:") ? (
+						<p style={styles.url}>{props.value}</p>
+					) : null}
 				</div>
 			) : (
 				<label style={styles.dropzone}>
-					{uploading ? "Uploading to Cloudflare R2…" : "Choose image"}
+					<span style={styles.dropzoneTitle}>
+						{uploading ? "Uploading to Cloudflare R2…" : "Choose image"}
+					</span>
+					{!uploading ? (
+						<span style={styles.dropzoneHint}>PNG, JPG, WebP, or GIF</span>
+					) : null}
 					<input
 						id={inputId}
 						type="file"
@@ -152,7 +275,7 @@ function R2ImageInput(
 						disabled={uploading}
 						style={styles.hiddenInput}
 						onChange={(event) => {
-							void onFileChange(event.target.files?.[0]);
+							onFileChange(event.target.files?.[0]);
 							event.target.value = "";
 						}}
 					/>
@@ -206,67 +329,110 @@ export function r2Image(options: R2ImageOptions): BasicFormField<R2ImageValue> {
 	};
 }
 
+/** Theme-aware styles that work on Keystatic's dark (and light) UI. */
 const styles: Record<string, CSSProperties> = {
 	field: {
 		display: "flex",
 		flexDirection: "column",
-		gap: "0.5rem",
+		gap: "0.75rem",
+		color: "inherit",
+	},
+	labelBlock: {
+		display: "flex",
+		flexDirection: "column",
+		gap: "0.25rem",
 	},
 	label: {
 		fontWeight: 600,
 		fontSize: "0.875rem",
+		color: "inherit",
 	},
 	description: {
 		margin: 0,
-		color: "#6b7280",
+		opacity: 0.65,
 		fontSize: "0.8125rem",
+		color: "inherit",
 	},
 	dropzone: {
 		display: "flex",
+		flexDirection: "column",
 		alignItems: "center",
 		justifyContent: "center",
-		minHeight: "8rem",
-		border: "1px dashed #c4c4c4",
-		borderRadius: "0.5rem",
+		gap: "0.35rem",
+		minHeight: "9rem",
+		padding: "1.25rem",
+		border: "1px dashed color-mix(in srgb, currentColor 35%, transparent)",
+		borderRadius: "0.75rem",
 		cursor: "pointer",
-		background: "#fafafa",
+		background: "color-mix(in srgb, currentColor 6%, transparent)",
+		color: "inherit",
+		textAlign: "center",
+	},
+	dropzoneTitle: {
 		fontSize: "0.875rem",
+		fontWeight: 600,
+		color: "inherit",
+	},
+	dropzoneHint: {
+		fontSize: "0.75rem",
+		opacity: 0.6,
+		color: "inherit",
 	},
 	previewWrap: {
 		display: "flex",
 		flexDirection: "column",
-		gap: "0.5rem",
+		gap: "0.75rem",
+	},
+	previewFrame: {
+		position: "relative",
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+		borderRadius: "0.75rem",
+		border: "1px solid color-mix(in srgb, currentColor 18%, transparent)",
+		background: "color-mix(in srgb, currentColor 6%, transparent)",
+		overflow: "hidden",
+		minHeight: "8rem",
 	},
 	preview: {
 		display: "block",
 		maxWidth: "100%",
 		maxHeight: "16rem",
+		width: "auto",
+		height: "auto",
 		objectFit: "contain",
-		borderRadius: "0.5rem",
-		border: "1px solid #e5e5e5",
-		background: "#f5f5f5",
+	},
+	overlay: {
+		position: "absolute",
+		inset: 0,
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+		background: "color-mix(in srgb, black 45%, transparent)",
+	},
+	overlayText: {
+		color: "#fff",
+		fontSize: "0.875rem",
+		fontWeight: 600,
 	},
 	actions: {
 		display: "flex",
+		flexWrap: "wrap",
 		gap: "0.5rem",
 	},
 	button: {
 		display: "inline-flex",
 		alignItems: "center",
-		padding: "0.375rem 0.75rem",
-		borderRadius: "0.375rem",
-		border: "1px solid #d1d5db",
-		background: "#fff",
+		justifyContent: "center",
+		padding: "0.4rem 0.85rem",
+		borderRadius: "0.5rem",
+		border: "1px solid color-mix(in srgb, currentColor 28%, transparent)",
+		background: "color-mix(in srgb, currentColor 10%, transparent)",
+		color: "inherit",
 		cursor: "pointer",
 		fontSize: "0.8125rem",
-	},
-	buttonSecondary: {
-		padding: "0.375rem 0.75rem",
-		borderRadius: "0.375rem",
-		border: "1px solid #d1d5db",
-		background: "#fff",
-		cursor: "pointer",
-		fontSize: "0.8125rem",
+		fontWeight: 600,
+		lineHeight: 1.2,
 	},
 	hiddenInput: {
 		display: "none",
@@ -274,12 +440,13 @@ const styles: Record<string, CSSProperties> = {
 	url: {
 		margin: 0,
 		fontSize: "0.75rem",
-		color: "#6b7280",
+		opacity: 0.55,
+		color: "inherit",
 		wordBreak: "break-all",
 	},
 	error: {
 		margin: 0,
-		color: "#b91c1c",
+		color: "#f87171",
 		fontSize: "0.8125rem",
 	},
 };
