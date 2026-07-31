@@ -1,4 +1,5 @@
 <script lang="ts">
+	import IconSearch from '~icons/material-symbols/search-rounded';
 	import TextInput from './Input/TextInput.svelte';
 
 	interface Props {
@@ -38,8 +39,11 @@
 		bind:value={searchQuery}
 		placeholder="Search articles..."
 		ariaLabel="Search articles"
-		iconStart="material-symbols:search-rounded"
-	/>
+	>
+		{#snippet iconStart({ width, height })}
+			<IconSearch {width} {height} aria-hidden="true" />
+		{/snippet}
+	</TextInput>
 </div>
 
 <style>

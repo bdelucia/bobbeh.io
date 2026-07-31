@@ -1,13 +1,7 @@
 <script lang="ts">
 	import type { TextInputComponentProps } from './types';
-	import CoreIcon from '../CoreIcon';
 
 	const uid = $props.id();
-
-	function trimIcon(value?: string | null): string {
-		const s = value?.trim() ?? '';
-		return s === '' ? '' : s;
-	}
 
 	let {
 		label = '',
@@ -29,9 +23,7 @@
 	const inputId = $derived(id ?? `${uid}-text-input`);
 	const hasError = $derived(Boolean(error));
 	const showSecondaryAction = $derived(Boolean(secondaryActionText));
-
-	const resolvedStartIcon = $derived(trimIcon(iconStart));
-	const resolvedEndIcon = $derived(trimIcon(iconEnd));
+	const iconSize = $derived(size === 'small' ? '16px' : '24px');
 </script>
 
 <div class={`text-input ${className ?? ''}`}>
@@ -44,13 +36,9 @@
 		class:text-input__field--error={hasError}
 		class:text-input__field--disabled={disabled}
 	>
-		{#if resolvedStartIcon}
+		{#if iconStart}
 			<span class="text-input__icon text-input__icon--start">
-				<CoreIcon
-					icon={resolvedStartIcon}
-					width={size === 'small' ? '16px' : '24px'}
-					height={size === 'small' ? '16px' : '24px'}
-				/>
+				{@render iconStart({ width: iconSize, height: iconSize })}
 			</span>
 		{/if}
 
@@ -71,13 +59,9 @@
 			</span>
 		{/if}
 
-		{#if resolvedEndIcon}
+		{#if iconEnd}
 			<span class="text-input__icon text-input__icon--end">
-				<CoreIcon
-					icon={resolvedEndIcon}
-					width={size === 'small' ? '16px' : '24px'}
-					height={size === 'small' ? '16px' : '24px'}
-				/>
+				{@render iconEnd({ width: iconSize, height: iconSize })}
 			</span>
 		{/if}
 	</div>

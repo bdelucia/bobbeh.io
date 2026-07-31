@@ -1,7 +1,10 @@
 import type { HTMLInputAttributes, HTMLTextareaAttributes } from 'svelte/elements';
+import type { Snippet } from 'svelte';
 
 export type InputVariant = 'outlined' | 'underlined' | 'tertiary';
 export type InputSize = 'large' | 'default' | 'small';
+
+export type InputIconSnippet = Snippet<[{ width: string; height: string }]>;
 
 export interface TextInputProps {
 	label?: string;
@@ -12,10 +15,8 @@ export interface TextInputProps {
 	disabled?: boolean;
 	error?: string;
 	ariaLabel?: string;
-	/** Leading Iconify icon id (e.g. `bx:search`, `material-symbols:search-rounded`). Whitespace-only hides the icon. */
-	iconStart?: string;
-	/** Trailing Iconify icon id. Whitespace-only hides the icon. */
-	iconEnd?: string;
+	iconStart?: InputIconSnippet;
+	iconEnd?: InputIconSnippet;
 	/** Optional tiny inline content rendered near the trailing side. */
 	secondaryActionText?: string;
 }
