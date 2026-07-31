@@ -1,14 +1,21 @@
 ---
+import { optimizeCdnImageUrl } from '../lib/cdn-image';
+
 interface Props {
 	src: string;
 	alt?: string;
 }
 
 const { src, alt = '' } = Astro.props;
+const optimizedSrc = optimizeCdnImageUrl(src, {
+	width: 1200,
+	format: 'auto',
+	quality: 80,
+});
 ---
 
 <figure class="content-image">
-	<img src={src} alt={alt} loading="lazy" decoding="async" />
+	<img src={optimizedSrc} alt={alt} loading="lazy" decoding="async" />
 	{alt ? <figcaption>{alt}</figcaption> : null}
 </figure>
 

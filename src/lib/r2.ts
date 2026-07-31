@@ -46,7 +46,11 @@ export function getR2Client() {
 /** Public CDN base for R2 objects. Override with CLOUDFLARE_R2_PUBLIC_URL if needed. */
 const DEFAULT_PUBLIC_URL = "https://cdn.bobbeh.io";
 
-/** Public URL stored in content. Prefer R2 custom domain when set. */
+/**
+ * Canonical public URL for an uploaded object (original bytes as stored in R2).
+ * Format conversion (WebP/AVIF) and resizing happen at delivery via
+ * Cloudflare Image Transformations (`/cdn-cgi/image/...`) — R2 does not convert on upload.
+ */
 export function getPublicObjectUrl(key: string) {
 	const publicBase = (
 		import.meta.env.CLOUDFLARE_R2_PUBLIC_URL || DEFAULT_PUBLIC_URL

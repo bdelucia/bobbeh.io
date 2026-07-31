@@ -9,6 +9,7 @@ import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import Analytics from '@vercel/analytics/astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
+import { optimizeCdnImageUrl } from '../lib/cdn-image';
 
 interface Props {
 	title: string;
@@ -21,7 +22,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const { title, description, image = FallbackImage } = Astro.props;
 const ogImage =
 	typeof image === 'string'
-		? new URL(image, Astro.site ?? Astro.url)
+		? new URL(
+				optimizeCdnImageUrl(image, {
+					width: 1200,
+					height: 630,
+					fit: 'cover',
+					format: 'jpeg',
+					quality: 85,
+				}),
+				Astro.site ?? Astro.url,
+			)
 		: new URL(image.src, Astro.url);
 ---
 
