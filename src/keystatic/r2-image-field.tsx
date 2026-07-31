@@ -207,6 +207,8 @@ function R2ImageInput(
 		setPreviewUrl(preview);
 	};
 
+	const fileInputRef = useRef<HTMLInputElement>(null);
+
 	return (
 		<div style={styles.field}>
 			<div style={styles.labelBlock}>
@@ -217,6 +219,19 @@ function R2ImageInput(
 					<p style={styles.description}>{props.description}</p>
 				) : null}
 			</div>
+
+			<input
+				ref={fileInputRef}
+				id={inputId}
+				type="file"
+				accept="image/*"
+				disabled={uploading}
+				style={styles.hiddenInput}
+				onChange={(event) => {
+					onFileChange(event.target.files?.[0]);
+					event.target.value = "";
+				}}
+			/>
 
 			{displaySrc ? (
 				<div style={styles.previewWrap}>
@@ -229,20 +244,14 @@ function R2ImageInput(
 						) : null}
 					</div>
 					<div style={styles.actions}>
-						<label style={styles.button}>
+						<button
+							type="button"
+							style={styles.button}
+							disabled={uploading}
+							onClick={() => fileInputRef.current?.click()}
+						>
 							{uploading ? "Uploading…" : "Replace"}
-							<input
-								id={inputId}
-								type="file"
-								accept="image/*"
-								disabled={uploading}
-								style={styles.hiddenInput}
-								onChange={(event) => {
-									onFileChange(event.target.files?.[0]);
-									event.target.value = "";
-								}}
-							/>
-						</label>
+						</button>
 						<button
 							type="button"
 							style={styles.button}
@@ -257,28 +266,17 @@ function R2ImageInput(
 						</button>
 					</div>
 					{props.value && !props.value.startsWith("blob:") ? (
-						<p style={styles.url}>{props.value}</p>
+						<code style={styles.url}>{props.value}</code>
 					) : null}
 				</div>
 			) : (
-				<label style={styles.dropzone}>
+				<label style={styles.dropzone} htmlFor={inputId}>
 					<span style={styles.dropzoneTitle}>
-						{uploading ? "Uploading to Cloudflare R2…" : "Choose image"}
+						{uploading ? "Uploading…" : "Choose image"}
 					</span>
 					{!uploading ? (
 						<span style={styles.dropzoneHint}>PNG, JPG, WebP, or GIF</span>
 					) : null}
-					<input
-						id={inputId}
-						type="file"
-						accept="image/*"
-						disabled={uploading}
-						style={styles.hiddenInput}
-						onChange={(event) => {
-							onFileChange(event.target.files?.[0]);
-							event.target.value = "";
-						}}
-					/>
 				</label>
 			)}
 
@@ -329,6 +327,10 @@ export function r2Image(options: R2ImageOptions): BasicFormField<R2ImageValue> {
 	};
 }
 
+/** Match Keystatic's Inter UI; form controls don't inherit font-family by default. */
+const font =
+	'Inter, "Inter var", ui-sans-serif, system-ui, -apple-system, sans-serif';
+
 /** Theme-aware styles that work on Keystatic's dark (and light) UI. */
 const styles: Record<string, CSSProperties> = {
 	field: {
@@ -336,6 +338,7 @@ const styles: Record<string, CSSProperties> = {
 		flexDirection: "column",
 		gap: "0.75rem",
 		color: "inherit",
+		fontFamily: font,
 	},
 	labelBlock: {
 		display: "flex",
@@ -343,14 +346,18 @@ const styles: Record<string, CSSProperties> = {
 		gap: "0.25rem",
 	},
 	label: {
+		fontFamily: font,
 		fontWeight: 600,
 		fontSize: "0.875rem",
+		lineHeight: 1.4,
 		color: "inherit",
 	},
 	description: {
 		margin: 0,
 		opacity: 0.65,
+		fontFamily: font,
 		fontSize: "0.8125rem",
+		lineHeight: 1.4,
 		color: "inherit",
 	},
 	dropzone: {
@@ -366,14 +373,17 @@ const styles: Record<string, CSSProperties> = {
 		cursor: "pointer",
 		background: "color-mix(in srgb, currentColor 6%, transparent)",
 		color: "inherit",
+		fontFamily: font,
 		textAlign: "center",
 	},
 	dropzoneTitle: {
+		fontFamily: font,
 		fontSize: "0.875rem",
 		fontWeight: 600,
 		color: "inherit",
 	},
 	dropzoneHint: {
+		fontFamily: font,
 		fontSize: "0.75rem",
 		opacity: 0.6,
 		color: "inherit",
@@ -411,6 +421,7 @@ const styles: Record<string, CSSProperties> = {
 		background: "color-mix(in srgb, black 45%, transparent)",
 	},
 	overlayText: {
+		fontFamily: font,
 		color: "#fff",
 		fontSize: "0.875rem",
 		fontWeight: 600,
@@ -424,28 +435,43 @@ const styles: Record<string, CSSProperties> = {
 		display: "inline-flex",
 		alignItems: "center",
 		justifyContent: "center",
-		padding: "0.4rem 0.85rem",
+		boxSizing: "border-box",
+		margin: 0,
+		padding: "0.375rem 0.75rem",
 		borderRadius: "0.5rem",
-		border: "1px solid color-mix(in srgb, currentColor 28%, transparent)",
-		background: "color-mix(in srgb, currentColor 10%, transparent)",
+		border: "1px solid color-mix(in srgb, currentColor 22%, transparent)",
+		background: "color-mix(in srgb, currentColor 8%, transparent)",
 		color: "inherit",
 		cursor: "pointer",
+		fontFamily: font,
 		fontSize: "0.8125rem",
-		fontWeight: 600,
-		lineHeight: 1.2,
+		fontWeight: 500,
+		lineHeight: 1.25,
+		WebkitAppearance: "none",
+		appearance: "none",
 	},
 	hiddenInput: {
 		display: "none",
 	},
 	url: {
+		display: "block",
+		boxSizing: "border-box",
 		margin: 0,
-		fontSize: "0.75rem",
-		opacity: 0.55,
+		padding: "0.4rem 0.6rem",
+		borderRadius: "0.375rem",
+		border: "1px solid color-mix(in srgb, currentColor 14%, transparent)",
+		background: "color-mix(in srgb, currentColor 6%, transparent)",
+		fontFamily:
+			'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace',
+		fontSize: "0.6875rem",
+		lineHeight: 1.45,
+		opacity: 0.7,
 		color: "inherit",
 		wordBreak: "break-all",
 	},
 	error: {
 		margin: 0,
+		fontFamily: font,
 		color: "#f87171",
 		fontSize: "0.8125rem",
 	},

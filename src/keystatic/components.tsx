@@ -180,10 +180,12 @@ export function contentImageComponents(folder: string) {
 export function heroImageField(folder: string) {
 	return r2Image({
 		label: "Hero Image",
-		description: "Uploaded to Cloudflare R2 (not GitHub)",
 		folder,
 	});
 }
+
+const font =
+	'Inter, "Inter var", ui-sans-serif, system-ui, -apple-system, sans-serif';
 
 const styles: Record<string, CSSProperties> = {
 	shell: {
@@ -194,6 +196,7 @@ const styles: Record<string, CSSProperties> = {
 		borderRadius: "0.75rem",
 		background: "color-mix(in srgb, currentColor 5%, transparent)",
 		color: "inherit",
+		fontFamily: font,
 	},
 	previewFrame: {
 		position: "relative",
@@ -222,6 +225,7 @@ const styles: Record<string, CSSProperties> = {
 		background: "color-mix(in srgb, black 45%, transparent)",
 	},
 	overlayText: {
+		fontFamily: font,
 		color: "#fff",
 		fontSize: "0.875rem",
 		fontWeight: 600,
@@ -238,13 +242,16 @@ const styles: Record<string, CSSProperties> = {
 		background: "color-mix(in srgb, currentColor 6%, transparent)",
 		cursor: "pointer",
 		color: "inherit",
+		fontFamily: font,
 	},
 	dropzoneTitle: {
+		fontFamily: font,
 		fontWeight: 600,
 		fontSize: "0.875rem",
 		color: "inherit",
 	},
 	dropzoneHint: {
+		fontFamily: font,
 		fontSize: "0.75rem",
 		opacity: 0.6,
 		color: "inherit",
@@ -259,21 +266,27 @@ const styles: Record<string, CSSProperties> = {
 		display: "inline-flex",
 		alignItems: "center",
 		justifyContent: "center",
-		padding: "0.4rem 0.85rem",
+		boxSizing: "border-box",
+		margin: 0,
+		padding: "0.375rem 0.75rem",
 		borderRadius: "0.5rem",
-		border: "1px solid color-mix(in srgb, currentColor 28%, transparent)",
-		background: "color-mix(in srgb, currentColor 10%, transparent)",
+		border: "1px solid color-mix(in srgb, currentColor 22%, transparent)",
+		background: "color-mix(in srgb, currentColor 8%, transparent)",
 		color: "inherit",
 		cursor: "pointer",
+		fontFamily: font,
 		fontSize: "0.8125rem",
-		fontWeight: 600,
-		lineHeight: 1.2,
+		fontWeight: 500,
+		lineHeight: 1.25,
+		WebkitAppearance: "none",
+		appearance: "none",
 	},
 	altLabel: {
 		display: "flex",
 		alignItems: "center",
 		gap: "0.4rem",
 		flex: "1 1 12rem",
+		fontFamily: font,
 		fontSize: "0.8125rem",
 		fontWeight: 600,
 		color: "inherit",
@@ -286,6 +299,7 @@ const styles: Record<string, CSSProperties> = {
 		border: "1px solid color-mix(in srgb, currentColor 28%, transparent)",
 		background: "color-mix(in srgb, currentColor 8%, transparent)",
 		color: "inherit",
+		fontFamily: font,
 		fontSize: "0.8125rem",
 		fontWeight: 400,
 	},
@@ -294,6 +308,7 @@ const styles: Record<string, CSSProperties> = {
 	},
 	error: {
 		margin: 0,
+		fontFamily: font,
 		color: "#f87171",
 		fontSize: "0.8125rem",
 	},
