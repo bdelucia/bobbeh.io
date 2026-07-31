@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "engines": {
-    "node": ">=22.12.0"
+    "node": "22.12.0"
   },
   "scripts": {
     "dev": "astro dev",
@@ -18,8 +18,10 @@
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
     "@astrojs/svelte": "^9.0.1",
+    "@astrojs/vercel": "^11.0.4",
     "@fontsource-variable/open-sans": "^5.3.0",
     "@iconify-json/boxicons": "^1.2.0",
+    "@iconify-json/bxl": "^1.2.4",
     "@iconify/svelte": "5.2.1",
     "@keystatic/astro": "^5.2.0",
     "@keystatic/core": "^0.6.2",
