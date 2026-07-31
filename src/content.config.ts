@@ -21,11 +21,22 @@ const articles = defineCollection({
 		}),
 });
 
-const about = defineCollection({
-	loader: glob({ base: './src/content/about', pattern: '**/*.mdoc' }),
-	schema: z.object({
-		title: z.string(),
+const trips = defineCollection({
+	loader: glob({
+		base: './src/content/trips',
+		pattern: '**/*.{md,mdx,mdoc}',
+		generateId: ({ entry }) =>
+			entry.replace(/\.(md|mdx|mdoc)$/, '').replace(/\/index$/, ''),
 	}),
+	schema: ({ image }) =>
+		z.object({
+			title: z.string(),
+			status: z.enum(['draft', 'published']).default('published'),
+			description: z.string().default(''),
+			startDate: z.coerce.date(),
+			endDate: z.coerce.date().optional(),
+			heroImage: z.optional(image()),
+		}),
 });
 
 const uses = defineCollection({
@@ -35,4 +46,4 @@ const uses = defineCollection({
 	}),
 });
 
-export const collections = { articles, about, uses };
+export const collections = { articles, trips, uses };

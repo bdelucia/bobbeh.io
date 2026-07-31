@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import TripCard from '../../components/TripCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { isPublishedTrip, sortTripsByStartDate } from '../../utils/trips';
+
+const trips = (await getCollection('trips')).filter(isPublishedTrip).sort(sortTripsByStartDate);
+---
+
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	<section class="trip-list">
+		<ul class="trip-list__grid">
+			{trips.map((trip, index) => (
+				<li>
+					<TripCard trip={trip} featured={index === 0} />
+				</li>
+			))}
+		</ul>
+	</section>
+</BaseLayout>
+
+<style>
+	.trip-list {
+		width: 960px;
+		max-width: 100%;
+		margin: 0 auto;
+	}
+
+	.trip-list__grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--size-6, 2rem);
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.trip-list__grid > li:first-child {
+		grid-column: 1 / -1;
+	}
+
+	@media (max-width: 720px) {
+		.trip-list__grid {
+			grid-template-columns: 1fr;
+			gap: var(--size-4, 1rem);
+		}
+	}
+</style>

@@ -1,0 +1,97 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import ArticlePlaceholderImage from '../assets/article-placeholder.jpg';
+import FormattedDateRange from './FormattedDateRange.astro';
+
+interface Props {
+	trip: CollectionEntry<'trips'>;
+	featured?: boolean;
+}
+
+const { trip, featured = false } = Astro.props;
+const { title, heroImage, startDate, endDate } = trip.data;
+const href = `/trips/${trip.id}/`;
+const image = heroImage ?? ArticlePlaceholderImage;
+---
+
+<article class:list={['trip-card', { 'trip-card--featured': featured }]}>
+	<a href={href} class="trip-card__link">
+		<div class="trip-card__image">
+			<Image width={720} height={360} src={image} alt="" />
+		</div>
+		<div class="trip-card__body">
+			<h2 class="trip-card__title">{title}</h2>
+			<p class="trip-card__date">
+				<FormattedDateRange startDate={startDate} endDate={endDate} />
+			</p>
+		</div>
+	</a>
+</article>
+
+<style>
+	.trip-card {
+		height: 100%;
+	}
+
+	.trip-card__link {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		text-decoration: none;
+		color: inherit;
+		background: var(--bg-surface, #eae9e7);
+		border: 1px solid var(--border-subtle, #d1cfcd);
+		border-radius: var(--radius-lg, 0.75rem);
+		overflow: hidden;
+		transition:
+			border-color 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.trip-card__link:hover {
+		border-color: var(--border-accent, #3584e4);
+		transform: translateY(-2px);
+	}
+
+	.trip-card__link:hover .trip-card__title,
+	.trip-card__link:hover .trip-card__date {
+		color: var(--accent-primary, #3584e4);
+	}
+
+	.trip-card__image img {
+		display: block;
+		width: 100%;
+		aspect-ratio: 2 / 1;
+		object-fit: cover;
+		border-radius: var(--radius-lg, 0.75rem) var(--radius-lg, 0.75rem) 0 0;
+	}
+
+	.trip-card__body {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		padding: var(--size-4, 1rem);
+	}
+
+	.trip-card--featured .trip-card__body {
+		align-items: center;
+		text-align: center;
+	}
+
+	.trip-card__title {
+		margin: 0;
+		font-size: var(--font-size-xl, 1.5rem);
+		line-height: var(--line-height-tight, 1.25);
+		color: var(--text-primary, #1c1b22);
+		transition: color 0.2s ease;
+	}
+
+	.trip-card__date {
+		margin: auto 0 0;
+		padding-top: var(--size-2, 0.5rem);
+		color: var(--text-muted, #55545f);
+		font-size: var(--font-size-base, 1rem);
+		transition: color 0.2s ease;
+	}
+</style>

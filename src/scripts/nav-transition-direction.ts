@@ -11,9 +11,12 @@ function isHome(pathname: string) {
 	return normalizePath(pathname) === '/';
 }
 
-function isArticlePost(pathname: string) {
+function isNestedNavPost(pathname: string) {
 	const path = normalizePath(pathname);
-	return path.startsWith('/articles/');
+	return NAV_ROUTES.some((route) => {
+		const routePath = normalizePath(route.href);
+		return routePath !== '/' && path.startsWith(`${routePath}/`);
+	});
 }
 
 /** Index in NAV_ROUTES, or -1. Nested paths (e.g. /articles/slug) match their parent nav item. */
@@ -40,8 +43,8 @@ document.addEventListener('astro:before-preparation', (event) => {
 	const to = normalizePath(event.to.pathname);
 	const fromHome = isHome(from);
 	const toHome = isHome(to);
-	const fromPost = isArticlePost(from);
-	const toPost = isArticlePost(to);
+	const fromPost = isNestedNavPost(from);
+	const toPost = isNestedNavPost(to);
 
 	// Home sits above the nav — use a vertical slide.
 	if (fromHome && !toHome) {
@@ -53,7 +56,7 @@ document.addEventListener('astro:before-preparation', (event) => {
 		return;
 	}
 
-	// Articles are nested under /articles — use a vertical slide.
+	// Nested nav routes (e.g. /articles/slug, /trips/slug) — use a vertical slide.
 	if (!fromPost && toPost) {
 		event.direction = 'down';
 		return;

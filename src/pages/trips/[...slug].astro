@@ -1,0 +1,20 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import TripPost from '../../layouts/TripPost.astro';
+
+export async function getStaticPaths() {
+	const trips = await getCollection('trips', ({ data }) => data.status === 'published');
+	return trips.map((trip) => ({
+		params: { slug: trip.id },
+		props: trip,
+	}));
+}
+type Props = CollectionEntry<'trips'>;
+
+const trip = Astro.props;
+const { Content } = await render(trip);
+---
+
+<TripPost {...trip.data}>
+	<Content />
+</TripPost>

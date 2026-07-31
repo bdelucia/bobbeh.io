@@ -55,6 +55,45 @@ export default config({
         }),
       },
     }),
+    trips: collection({
+      label: "Trips",
+      slugField: "title",
+      path: "src/content/trips/*/",
+      format: { contentField: "content" },
+      columns: ["title", "status", "startDate"],
+      schema: {
+        title: fields.slug({ name: { label: "Title" } }),
+        status: fields.select({
+          label: "Status",
+          options: [
+            { label: "Draft", value: "draft" },
+            { label: "Published", value: "published" },
+          ],
+          defaultValue: "draft",
+        }),
+        startDate: fields.date({
+          label: "Start date",
+          defaultValue: { kind: "today" },
+        }),
+        endDate: fields.date({
+          label: "End date",
+        }),
+        heroImage: fields.image({
+          label: "Hero Image",
+          directory: "src/content/trips",
+          publicPath: "./",
+        }),
+        content: fields.markdoc({
+          label: "Content",
+          options: {
+            image: {
+              directory: "src/content/trips",
+              publicPath: "./",
+            },
+          },
+        }),
+      },
+    }),
   },
   singletons: {
     uses: singleton({
@@ -66,15 +105,6 @@ export default config({
         content: fields.markdoc({
           label: "Content",
         }),
-      },
-    }),
-    about: singleton({
-      label: "About",
-      path: "src/content/about/",
-      format: { contentField: "content" },
-      schema: {
-        title: fields.text({ label: "Title" }),
-        content: fields.markdoc({ label: "Content" }),
       },
     }),
   },
