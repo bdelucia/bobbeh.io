@@ -18,6 +18,7 @@
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
     "@astrojs/svelte": "^9.0.1",
+    "@astrojs/vercel": "^11.0.4",
     "@fontsource-variable/open-sans": "^5.3.0",
     "@iconify-json/boxicons": "^1.2.0",
     "@iconify-json/bxl": "^1.2.4",
