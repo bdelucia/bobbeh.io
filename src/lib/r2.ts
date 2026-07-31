@@ -43,14 +43,15 @@ export function getR2Client() {
 	return client;
 }
 
-/** Public URL stored in content. Prefer R2 public/custom domain when set. */
+/** Public CDN base for R2 objects. Override with CLOUDFLARE_R2_PUBLIC_URL if needed. */
+const DEFAULT_PUBLIC_URL = "https://cdn.bobbeh.io";
+
+/** Public URL stored in content. Prefer R2 custom domain when set. */
 export function getPublicObjectUrl(key: string) {
-	const publicBase = import.meta.env.CLOUDFLARE_R2_PUBLIC_URL?.replace(/\/$/, "");
-	if (publicBase) {
-		return `${publicBase}/${key}`;
-	}
-	// Served by /media/[...key] using R2 credentials (works without public bucket access).
-	return `/media/${key}`;
+	const publicBase = (
+		import.meta.env.CLOUDFLARE_R2_PUBLIC_URL || DEFAULT_PUBLIC_URL
+	).replace(/\/$/, "");
+	return `${publicBase}/${key}`;
 }
 
 function sanitizeFilename(filename: string) {
