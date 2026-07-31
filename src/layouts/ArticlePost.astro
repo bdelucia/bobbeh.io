@@ -1,8 +1,7 @@
 ---
-import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import ArticlePlaceholderImage from '../assets/article-placeholder.jpg';
 import FormattedDate from '../components/FormattedDate.astro';
+import SmartImage from '../components/SmartImage.astro';
 import TagList from '../components/TagList.astro';
 import BaseLayout from './BaseLayout.astro';
 
@@ -14,13 +13,12 @@ type Props = Pick<CollectionEntry<'articles'>['data'], 'title' | 'description'> 
 };
 
 const { title, description, pubDate, updatedDate, heroImage, tags = [] } = Astro.props;
-const image = heroImage ?? ArticlePlaceholderImage;
 ---
 
-<BaseLayout title={title} description={description} image={image}>
+<BaseLayout title={title} description={description} image={heroImage}>
 	<article>
 		<div class="hero-image">
-			<Image width={1020} height={510} src={image} alt="" />
+			<SmartImage width={1020} height={510} src={heroImage} alt="" />
 		</div>
 		<div class="prose">
 			<div class="title">

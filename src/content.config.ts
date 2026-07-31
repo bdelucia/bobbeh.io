@@ -9,16 +9,15 @@ const articles = defineCollection({
 		generateId: ({ entry }) =>
 			entry.replace(/\.(md|mdx|mdoc)$/, '').replace(/\/index$/, ''),
 	}),
-	schema: ({ image }) =>
-		z.object({
-			title: z.string(),
-			status: z.enum(['draft', 'published']).default('published'),
-			description: z.string().default(''),
-			pubDate: z.coerce.date().optional(),
-			updatedDate: z.coerce.date().optional(),
-			heroImage: z.optional(image()),
-			tags: z.array(z.string()).default([]),
-		}),
+	schema: z.object({
+		title: z.string(),
+		status: z.enum(['draft', 'published']).default('published'),
+		description: z.string().default(''),
+		pubDate: z.coerce.date().optional(),
+		updatedDate: z.coerce.date().optional(),
+		heroImage: z.string().optional(),
+		tags: z.array(z.string()).default([]),
+	}),
 });
 
 const trips = defineCollection({
@@ -28,15 +27,14 @@ const trips = defineCollection({
 		generateId: ({ entry }) =>
 			entry.replace(/\.(md|mdx|mdoc)$/, '').replace(/\/index$/, ''),
 	}),
-	schema: ({ image }) =>
-		z.object({
-			title: z.string(),
-			status: z.enum(['draft', 'published']).default('published'),
-			description: z.string().default(''),
-			startDate: z.coerce.date(),
-			endDate: z.coerce.date().optional(),
-			heroImage: z.optional(image()),
-		}),
+	schema: z.object({
+		title: z.string(),
+		status: z.enum(['draft', 'published']).default('published'),
+		description: z.string().default(''),
+		startDate: z.coerce.date(),
+		endDate: z.coerce.date().optional(),
+		heroImage: z.string().optional(),
+	}),
 });
 
 const uses = defineCollection({

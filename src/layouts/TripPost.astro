@@ -1,20 +1,18 @@
 ---
-import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import ArticlePlaceholderImage from '../assets/article-placeholder.jpg';
 import FormattedDateRange from '../components/FormattedDateRange.astro';
+import SmartImage from '../components/SmartImage.astro';
 import BaseLayout from './BaseLayout.astro';
 
 type Props = Pick<CollectionEntry<'trips'>['data'], 'title' | 'description' | 'startDate' | 'endDate' | 'heroImage'>;
 
 const { title, description, startDate, endDate, heroImage } = Astro.props;
-const image = heroImage ?? ArticlePlaceholderImage;
 ---
 
-<BaseLayout title={title} description={description} image={image}>
+<BaseLayout title={title} description={description} image={heroImage}>
 	<article>
 		<div class="hero-image">
-			<Image width={1020} height={510} src={image} alt="" />
+			<SmartImage width={1020} height={510} src={heroImage} alt="" />
 		</div>
 		<div class="prose">
 			<div class="title">
