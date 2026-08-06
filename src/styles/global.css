@@ -187,6 +187,32 @@ h4 {
 h5 {
 	font-size: var(--font-size-lg, 1.25rem);
 }
+
+/* Content pages: tighter heading scale than the global display sizes */
+.prose h1 {
+	font-size: var(--font-size-2xl, 2rem);
+}
+.prose h2 {
+	font-size: var(--font-size-xl, 1.5rem);
+}
+.prose h3 {
+	font-size: var(--font-size-lg, 1.25rem);
+}
+.prose h4 {
+	font-size: var(--font-size-base, 1rem);
+}
+.prose h5,
+.prose h6 {
+	font-size: var(--font-size-base, 1rem);
+	font-weight: var(--font-weight-semibold, 600);
+}
+.prose :is(h1, h2, h3, h4, h5, h6) {
+	margin-top: var(--size-6, 2rem);
+	margin-bottom: var(--size-3, 0.75rem);
+}
+.prose .title :is(h1, h2, h3, h4, h5, h6) {
+	margin-top: 0;
+}
 strong,
 b {
 	font-weight: var(--font-weight-bold, 700);
@@ -250,13 +276,27 @@ code {
 	background-color: var(--bg-surface, #eae9e7);
 	border-radius: 2px;
 }
+.prose code {
+	background-color: var(--bg-surface-hover, #dfdddb);
+}
 pre {
 	padding: var(--size-5, 1.5rem);
 	border-radius: var(--radius-md, 0.5rem);
+	overflow-x: auto;
 }
 pre > code {
 	all: unset;
 	font-family: var(--font-caskaydia);
+}
+
+/* Shiki dual-theme: light is the default inline color; dark via CSS vars */
+:root[data-theme="dark"] .astro-code,
+:root[data-theme="dark"] .astro-code span {
+	color: var(--shiki-dark) !important;
+	background-color: #1c1c1c !important;
+	font-style: var(--shiki-dark-font-style) !important;
+	font-weight: var(--shiki-dark-font-weight) !important;
+	text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 blockquote {
 	border-left: 4px solid var(--border-accent, #3584e4);
