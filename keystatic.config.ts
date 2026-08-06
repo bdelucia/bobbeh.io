@@ -22,6 +22,11 @@ export default config({
 			columns: ["title", "status", "pubDate"],
 			schema: {
 				title: fields.slug({ name: { label: "Title" } }),
+				description: fields.text({
+					label: "Description",
+					description: "Short summary shown under the title on the article page",
+					multiline: true,
+				}),
 				status: fields.select({
 					label: "Status",
 					options: [
