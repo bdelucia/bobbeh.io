@@ -4,11 +4,21 @@ status: published
 pubDate: 2026-07-26
 tags:
   - Tutorial
-  - Opinion
 heroImage: >-
   https://cdn.bobbeh.io/articles/1cc25dbd-6606-4692-85f8-79ffeab7eb77-heroimage.png
 ---
-Hello.\
+As a web developer and Linux user, I spend a lot of time in a terminal. Whether it be in a WSL2 Ubuntu terminal on Windows or a Kitty terminal on Arch Linux, the default styling for the terminals need a lot of work.
 
-{% Image
-   src="https://cdn.bobbeh.io/articles/29c1d07c-1638-420b-84b3-c6475eaffbf3-260730_18h53m10s_screenshot.png" /%}
+Here is how I customize my terminals!
+
+# Switch to zsh
+
+Usually, Linux terminals use the default `bash` shell. If you are using the `bash` shell, I highly recommend switching to `zsh`, as it provides a number of nice improvements, such as:
+
+- Context-aware autocompletion
+- Spelling corrections
+- Shared command history (command ran in Terminal 1 is available to Terminal 2 via the up-arrow).
+
+```echo
+You can check what shell you are running currently, by using this command:echo $0
+```
