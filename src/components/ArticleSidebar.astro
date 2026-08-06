@@ -1,0 +1,174 @@
+---
+import type { MarkdownHeading } from 'astro';
+import FormattedDate from './FormattedDate.astro';
+import TagList from './TagList.astro';
+
+interface Props {
+	pubDate?: Date;
+	tags: string[];
+	headings: MarkdownHeading[];
+	embedded?: boolean;
+}
+
+interface HeadingGroup {
+	heading: MarkdownHeading;
+	children: MarkdownHeading[];
+}
+
+const { pubDate, tags, headings, embedded = false } = Astro.props;
+const tocTitleId = embedded ? 'article-toc-title-embedded' : 'article-toc-title';
+const tableOfContents = headings
+	.filter(({ depth }) => depth === 1 || depth === 2)
+	.reduce<HeadingGroup[]>((groups, heading) => {
+		if (heading.depth === 1) {
+			groups.push({ heading, children: [] });
+		} else if (groups.length > 0) {
+			groups.at(-1)?.children.push(heading);
+		} else {
+			groups.push({ heading, children: [] });
+		}
+
+		return groups;
+	}, []);
+---
+
+<aside
+	class:list={['article-sidebar', { 'article-sidebar--embedded': embedded }]}
+	aria-label="Article information"
+>
+	{
+		!embedded && pubDate && (
+			<p class="article-sidebar__published">
+				Published by Bobby DeLucia on <FormattedDate date={pubDate} />
+			</p>
+		)
+	}
+
+	{!embedded && tags.length > 0 && (
+		<div class="article-sidebar__tags">
+			<TagList tags={tags} />
+		</div>
+	)}
+
+	{
+		tableOfContents.length > 0 && (
+			<nav class="article-sidebar__toc" aria-labelledby={tocTitleId}>
+				<h2 id={tocTitleId}>Table of contents</h2>
+				<ol>
+					{tableOfContents.map(({ heading, children }) => (
+						<li>
+							<a href={`#${heading.slug}`}>{heading.text}</a>
+							{children.length > 0 && (
+								<ol>
+									{children.map((child) => (
+										<li>
+											<a href={`#${child.slug}`}>{child.text}</a>
+										</li>
+									))}
+								</ol>
+							)}
+						</li>
+					))}
+				</ol>
+			</nav>
+		)
+	}
+</aside>
+
+<style>
+	.article-sidebar {
+		position: sticky;
+		top: var(--size-4, 1rem);
+		display: flex;
+		flex-direction: column;
+		gap: var(--size-4, 1rem);
+		padding: var(--size-4, 1rem);
+		background: var(--bg-surface, #eae9e7);
+		border: 1px solid var(--border-subtle, #d1cfcd);
+		border-radius: var(--radius-lg, 0.75rem);
+		box-sizing: border-box;
+		font-size: 0.875rem;
+		line-height: var(--line-height-normal, 1.5);
+	}
+
+	.article-sidebar--embedded {
+		position: static;
+		display: none;
+		margin-bottom: var(--size-6, 2rem);
+	}
+
+	.article-sidebar__published {
+		margin: 0;
+		color: var(--text-muted, #55545f);
+	}
+
+	.article-sidebar :global(.tag-list) {
+		margin: 0;
+	}
+
+	.article-sidebar :global(.tag) {
+		font-size: 0.875rem;
+	}
+
+	.article-sidebar__toc {
+		padding-top: var(--size-4, 1rem);
+		border-top: 1px solid var(--border-subtle, #d1cfcd);
+	}
+
+	.article-sidebar__toc h2 {
+		margin: 0 0 var(--size-3, 0.75rem);
+		font-size: 1.125rem;
+	}
+
+	.article-sidebar__toc ol {
+		display: flex;
+		flex-direction: column;
+		gap: var(--size-2, 0.5rem);
+		margin: 0;
+		padding-left: var(--size-5, 1.5rem);
+		list-style: decimal;
+	}
+
+	.article-sidebar__toc ol ol {
+		margin-top: var(--size-2, 0.5rem);
+		padding-left: var(--size-4, 1rem);
+		list-style: disc;
+	}
+
+	.article-sidebar__toc a {
+		display: block;
+		color: var(--text-primary, #1c1b22);
+		line-height: var(--line-height-tight, 1.25);
+		text-decoration: none;
+	}
+
+	.article-sidebar__toc a:hover {
+		color: var(--accent-primary, #3584e4);
+		text-decoration: underline;
+	}
+
+	@media (max-width: 1400px) {
+		.article-sidebar:not(.article-sidebar--embedded) {
+			display: none;
+		}
+
+		.article-sidebar--embedded {
+			display: flex;
+			background: var(--bg-surface-hover, #dfdddb);
+		}
+
+		.article-sidebar--embedded :global(.article-sidebar__toc) {
+			padding-top: 0;
+			border-top: 0;
+		}
+
+		.article-sidebar--embedded :global(.article-sidebar__toc h2) {
+			font-size: var(--font-size-xl, 1.5rem);
+		}
+
+		.article-sidebar--embedded :global(.article-sidebar__toc li),
+		.article-sidebar--embedded :global(.article-sidebar__toc a) {
+			font-size: var(--font-size-lg, 1.25rem);
+		}
+	}
+</style>

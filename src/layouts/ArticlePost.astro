@@ -1,32 +1,67 @@
 ---
+import type { MarkdownHeading } from 'astro';
 import type { CollectionEntry } from 'astro:content';
+import ArticleSidebar from '../components/ArticleSidebar.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import SmartImage from '../components/SmartImage.astro';
+import TagList from '../components/TagList.astro';
 import BaseLayout from './BaseLayout.astro';
 
 type Props = Pick<CollectionEntry<'articles'>['data'], 'title' | 'description'> & {
 	heroImage?: CollectionEntry<'articles'>['data']['heroImage'];
+	pubDate?: CollectionEntry<'articles'>['data']['pubDate'];
+	tags: CollectionEntry<'articles'>['data']['tags'];
+	headings: MarkdownHeading[];
 };
 
-const { title, description, heroImage } = Astro.props;
+const { title, description, heroImage, pubDate, tags, headings } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description} image={heroImage}>
-	<article>
-		<div class="hero-image">
-			<SmartImage width={1020} height={510} src={heroImage} alt="" />
-		</div>
-		<div class="prose">
-			<div class="title">
-				<h1>{title}</h1>
-				{description && <p class="description">{description}</p>}
-				<hr />
+	<div class="article-layout">
+		<article>
+			<div class="hero-image">
+				<SmartImage width={1020} height={510} src={heroImage} alt="" />
 			</div>
-			<slot />
-		</div>
-	</article>
+			<div class="prose">
+				<div class="title">
+					<h1>{title}</h1>
+					{description && <p class="description">{description}</p>}
+					{
+						pubDate && (
+							<p class="article-published">
+								Published by Bobby DeLucia on <FormattedDate date={pubDate} />
+							</p>
+						)
+					}
+					<hr />
+				</div>
+				<ArticleSidebar
+					pubDate={pubDate}
+					tags={tags}
+					headings={headings}
+					embedded
+				/>
+				<slot />
+				{tags.length > 0 && (
+					<footer class="article-tags">
+						<TagList tags={tags} />
+					</footer>
+				)}
+			</div>
+		</article>
+		<ArticleSidebar pubDate={pubDate} tags={tags} headings={headings} />
+	</div>
 </BaseLayout>
 
 <style>
+	.article-layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1020px) 300px;
+		align-items: start;
+		justify-content: center;
+		gap: var(--size-5, 1.5rem);
+	}
 	.hero-image {
 		display: flex;
 		align-items: center;
@@ -35,13 +70,13 @@ const { title, description, heroImage } = Astro.props;
 		max-height: 510px;
 		margin: 0 auto;
 		overflow: hidden;
-		border-radius: var(--radius-lg, 0.75rem);
 	}
 	.hero-image :global(img) {
 		display: block;
 		width: 100%;
 		height: auto;
 		flex-shrink: 0;
+		border-radius: var(--radius-lg, 0.75rem) var(--radius-lg, 0.75rem) 0 0;
 	}
 	.prose {
 		width: 1020px;
@@ -70,5 +105,31 @@ const { title, description, heroImage } = Astro.props;
 		color: var(--text-muted, #55545f);
 		font-size: var(--font-size-lg, 1.125rem);
 		line-height: var(--line-height-normal, 1.5);
+	}
+
+	:global(.article-published),
+	:global(.article-tags) {
+		display: none;
+	}
+
+	@media (max-width: 1400px) {
+		.article-layout {
+			grid-template-columns: minmax(0, 1020px);
+		}
+
+		:global(.article-published) {
+			display: block;
+			margin: 0;
+			color: var(--text-muted, #55545f);
+			font-size: 0.875rem;
+			line-height: var(--line-height-normal, 1.5);
+		}
+
+		:global(.article-tags) {
+			display: block;
+			margin-top: var(--size-6, 2rem);
+			padding-top: var(--size-4, 1rem);
+			border-top: 1px solid var(--border-subtle, #d1cfcd);
+		}
 	}
 </style>
