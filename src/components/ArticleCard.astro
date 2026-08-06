@@ -53,7 +53,6 @@ const href = `/articles/${article.id}/`;
 
 	.article-card__link:hover {
 		border-color: var(--border-accent, #3584e4);
-		transform: translateY(-2px);
 	}
 
 	.article-card__link:hover .article-card__title,
@@ -64,7 +63,6 @@ const href = `/articles/${article.id}/`;
 	.article-card__image {
 		aspect-ratio: 2 / 1;
 		overflow: hidden;
-		border-radius: var(--radius-lg, 0.75rem) var(--radius-lg, 0.75rem) 0 0;
 	}
 
 	.article-card__image :global(img) {
@@ -72,6 +70,7 @@ const href = `/articles/${article.id}/`;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		border-radius: var(--radius-lg, 0.75rem) var(--radius-lg, 0.75rem) 0 0;
 	}
 
 	.article-card__body {
