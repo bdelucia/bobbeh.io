@@ -4,11 +4,63 @@ status: published
 pubDate: 2026-07-26
 tags:
   - Tutorial
-  - Opinion
 heroImage: >-
   https://cdn.bobbeh.io/articles/1cc25dbd-6606-4692-85f8-79ffeab7eb77-heroimage.png
 ---
-Hello.\
+As a web developer and Linux user, I spend a lot of time in a terminal. Whether it be in a WSL2 Ubuntu terminal on Windows or a Kitty terminal on Arch Linux, the default styling for the terminals need a lot of work.
 
-{% Image
-   src="https://cdn.bobbeh.io/articles/29c1d07c-1638-420b-84b3-c6475eaffbf3-260730_18h53m10s_screenshot.png" /%}
+Here is how I customize my terminals!
+
+# Zed shell (zsh) and oh-my-zsh setup
+
+Usually, Linux terminals use the default `bash` shell.
+
+If you are using the `bash` shell, I highly recommend switching to `zsh`. This will allow us to use `oh-my-zsh`, which has many useful plugins, such as:
+
+- 
+
+You can check what shell you are running by running this command in your terminal:
+
+```bash
+echo $0
+```
+
+If it says `bash`, then you need to install `zsh`! Since 99% use Ubuntu, here are the steps for switch to the Zed shell with Ubuntu.
+
+## Switching to zsh
+
+1. Install the base shell:
+
+```bash
+sudo apt update
+sudo apt install zsh
+```
+
+2. Verify it was installed:
+
+```bash
+zsh --version
+```
+
+3. Change shells with `chsh`:
+
+```bash
+chsh -s $(which zsh)
+```
+
+4. Restart your terminal and open a new window.
+
+   > *It will ask you to configure `.zshrc`, just press `q` to close out of it. `oh-my-zsh` will create this file.*
+
+   {% Image
+      src="https://cdn.bobbeh.io/articles/d84734c9-b1de-4f85-9625-daf9b09989f9-image.png" /%}
+
+## Installing oh-my-zsh
+
+Now to truly unlock the power of `zsh`, we will install `oh-my-zsh` and add some sensible plugins.
+
+1. Install `oh-my-zsh`:
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
