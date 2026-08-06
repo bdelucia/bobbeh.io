@@ -59,11 +59,14 @@ const { title, description, pubDate, updatedDate, heroImage, tags = [] } = Astro
 		flex-shrink: 0;
 	}
 	.prose {
-		width: 720px;
-		max-width: calc(100% - var(--size-6, 2rem));
+		width: 1020px;
+		max-width: 100%;
 		margin: auto;
 		padding: var(--size-4, 1rem);
+		background-color: var(--bg-surface, #eae9e7);
+		border-radius: var(--radius-lg, 0.75rem);
 		color: var(--text-primary, #1c1b22);
+		box-sizing: border-box;
 	}
 	.title {
 		margin-bottom: var(--size-4, 1rem);
