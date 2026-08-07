@@ -150,9 +150,61 @@ Starship technically works on any terminal, even Powershell. But for this tutori
 ## Enabling a Nerd Font in your terminal
 
 1. First, download a Nerd Font of your choosing from the Nerd Font [website](https://www.nerdfonts.com/font-downloads). I use *CaskaydiaCove Nerd Font.* Make sure to install the font after downloading, I usually download the Regular and Regular Mono variants and that's pretty much it.
+1. Enable the font in your terminal. This is easy in WSL2 Ubuntu.
+   1. Hit the downwards chevron next to the new tab button, and click Settings.
 
-1. Enable the font in your terminal. This is easy in WSL2 Ubuntu.\
-   Hit the downwards chevron next to the new tab button, and click Settings.
+      {% Image
+         src="https://cdn.bobbeh.io/articles/6527aa40-5461-4de6-901e-1fb6a3e4e1cb-image.png" /%}
 
-   {% Image
-      src="https://cdn.bobbeh.io/articles/6527aa40-5461-4de6-901e-1fb6a3e4e1cb-image.png" /%}
+   1. Then go to: Ubuntu > Appearance\
+
+      {% Image
+         src="https://cdn.bobbeh.io/articles/2a12f9dc-e909-44bf-81a8-cb8d6decb817-image.png" /%}
+
+   1. Set the font to your Nerd Font, then hit Save.
+
+      {% Image
+         src="https://cdn.bobbeh.io/articles/fbff837f-11e7-4d14-bac6-a9fc4b62b96a-image.png" /%}
+
+## Installing Starship.rs
+
+1. Run this command:
+
+```bash
+curl -sS https://starship.rs/install.sh | sh
+```
+
+2. SInce we have `zsh`, we will add this line to the end of our `.zshrc` file:
+
+```bash
+eval "$(starship init zsh)"
+```
+
+Should look something like this:
+
+{% Image
+   src="https://cdn.bobbeh.io/articles/e5b76274-04fb-4cb0-a132-d927e7ae4c0b-image.png" /%}
+
+Now open up a new terminal, and you should see Starship's default styling applied!
+
+{% Image
+   src="https://cdn.bobbeh.io/articles/9536cc55-5b20-4dae-9341-97ae98d4de32-image.png" /%}
+
+## Configuring Starship.rs
+
+1. If you are starting out fresh, you probably don't have a .config directory. You will have to make it:
+
+```bash
+mkdir -p ~/.config
+```
+
+2. Now make a `starship.toml` file inside the `.config` directory:
+
+```bash
+touch ~/.config/starship.toml
+```
+
+3. This is where we will put our config! You can find many starting configs online, or you can start with using [mine](https://github.com/bdelucia/Starship-Config/blob/main/arch/starship.toml). Once you save this file, you should see the styling immediately!
+
+{% Image
+   src="https://cdn.bobbeh.io/articles/0304bd35-197c-4bab-9679-83a21cabcbc2-image.png" /%}
