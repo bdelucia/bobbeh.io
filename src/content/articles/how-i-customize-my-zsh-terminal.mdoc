@@ -17,7 +17,31 @@ Usually, Linux terminals use the default `bash` shell.
 
 If you are using the `bash` shell, I highly recommend switching to `zsh`. This will allow us to use `oh-my-zsh`, which has many useful plugins, such as:
 
-- 
+- Auto-suggestions: shows a gray suggestion after typing a command like `cd` or `vim`:
+
+{% Image
+   src="https://cdn.bobbeh.io/articles/5a81b1f1-ddad-473d-81c9-cb07b9128fb3-image.png" /%}
+
+- Completions: gives a list of context-aware commands. For example, if we are typing `git stash` and then hit `Tab`:
+
+  {% Image
+     src="https://cdn.bobbeh.io/articles/35bd9d76-0ab7-495f-a7bd-0993eda2e258-image.png" /%}
+
+  We get a comprehensive list of all the options available to use!
+
+- Syntax highlighting: tells you if a command is going to run or not before you use it:
+
+  ✅ Will run:\
+
+  {% Image
+     src="https://cdn.bobbeh.io/articles/e6a1b401-e32d-4058-8ed6-5d7732fe8278-image.png" /%}
+
+  ❌ Won't run:\
+
+  {% Image
+     src="https://cdn.bobbeh.io/articles/e3436703-69fc-4172-8167-01b8c7ef4bda-image.png" /%}
+
+---
 
 You can check what shell you are running by running this command in your terminal:
 
@@ -25,7 +49,7 @@ You can check what shell you are running by running this command in your termina
 echo $0
 ```
 
-If it says `bash`, then you need to install `zsh`! Since 99% use Ubuntu, here are the steps for switch to the Zed shell with Ubuntu.
+If it says `bash`, then you need to install `zsh`! Since 99% of people use Ubuntu, here are the steps for switch to the Zed shell with Ubuntu.
 
 ## Switching to zsh
 
@@ -55,7 +79,7 @@ chsh -s $(which zsh)
    {% Image
       src="https://cdn.bobbeh.io/articles/d84734c9-b1de-4f85-9625-daf9b09989f9-image.png" /%}
 
-## Installing oh-my-zsh
+## Installing oh-my-zsh + plugins
 
 Now to truly unlock the power of `zsh`, we will install `oh-my-zsh` and add some sensible plugins.
 
@@ -64,3 +88,71 @@ Now to truly unlock the power of `zsh`, we will install `oh-my-zsh` and add some
 ```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
+
+You should notice the terminal got a little fancy after doing that!\
+
+{% Image
+   src="https://cdn.bobbeh.io/articles/4dc60ca2-07f5-4f74-85c5-c10f61002919-image.png" /%}
+
+2. Install some plugins!
+
+### zsh-autosuggestions:
+
+```bash
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+```
+
+### zsh-syntax-highlighting:
+
+```bash
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+```
+
+### zsh-completions:
+
+```bash
+git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions
+```
+
+> To get zsh-completions to work, you will have to add this line before export `ZSH="$HOME/.oh-my-zsh"` in your `.zshrc` file:
+
+```bash
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+```
+
+Should look like this:\
+
+{% Image
+   src="https://cdn.bobbeh.io/articles/6576733d-83a5-41cf-9070-88c865bbb61a-image.png" /%}
+
+3. Now all we have to do is enable the plugins! \
+   In .zshrc, at the bottom of the file you will see a plugins=(git). Replace that with this:
+
+```bash
+plugins=(git zsh-autosuggestions zsh-completions zsh-syntax-highlighting) 
+```
+
+Save the file.
+
+You will have to delete the old completions cache, you will have to delete that so `oh-my-zsh` doesn't get confused. We also have to apply the `.zshrc` changes. Here's how to do it in one command:
+
+```bash
+rm -f ~/.zcompdump; compinit; source ~/.zshrc
+```
+
+You should now notice the plugins working!
+
+# Styling with Starship.rs
+
+[Starship.rs](https://starship.rs/) is how we are going to style our terminal. Yes you could use `oh-my-zsh` themes, but personally I have been using Starship.\
+Starship technically works on any terminal, even Powershell. But for this tutorial, we are going to be installing it on WSL2 Ubuntu.
+
+## Enabling a Nerd Font in your terminal
+
+1. First, download a Nerd Font of your choosing from the Nerd Font [website](https://www.nerdfonts.com/font-downloads). I use *CaskaydiaCove Nerd Font.* Make sure to install the font after downloading, I usually download the Regular and Regular Mono variants and that's pretty much it.
+
+1. Enable the font in your terminal. This is easy in WSL2 Ubuntu.\
+   Hit the downwards chevron next to the new tab button, and click Settings.
+
+   {% Image
+      src="https://cdn.bobbeh.io/articles/6527aa40-5461-4de6-901e-1fb6a3e4e1cb-image.png" /%}
