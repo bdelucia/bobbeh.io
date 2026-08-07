@@ -92,7 +92,7 @@ Now to truly unlock the power of `zsh`, we will install `oh-my-zsh` and add some
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
-You should notice the terminal got a little fancy after doing that!\
+You should notice the terminal got a little fancy after doing that!
 
 {% Image
    src="https://cdn.bobbeh.io/articles/4dc60ca2-07f5-4f74-85c5-c10f61002919-image.png" /%}
@@ -117,19 +117,19 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions
 ```
 
-> To get zsh-completions to work, you will have to add this line before export `ZSH="$HOME/.oh-my-zsh"` in your `.zshrc` file:
+> To get `zsh-completions` to work, you will have to add this line before export `ZSH="$HOME/.oh-my-zsh"` in your `.zshrc` file:
 
 ```bash
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 ```
 
-Should look like this:\
+Should look like this:
 
 {% Image
    src="https://cdn.bobbeh.io/articles/6576733d-83a5-41cf-9070-88c865bbb61a-image.png" /%}
 
 3. Now all we have to do is enable the plugins! \
-   In .zshrc, at the bottom of the file you will see a plugins=(git). Replace that with this:
+   In `.zshrc`, at the bottom of the file you will see a plugins=(git). Replace that with this:
 
 ```bash
 plugins=(git zsh-autosuggestions zsh-completions zsh-syntax-highlighting) 
@@ -147,13 +147,13 @@ You should now notice the plugins working!
 
 # Styling with Starship.rs
 
-[Starship.rs](https://starship.rs/) is how we are going to style our terminal. Yes you could use `oh-my-zsh` themes, but personally I have been using Starship.\
-Starship technically works on any terminal, even Powershell. But for this tutorial, we are going to be installing it on WSL2 Ubuntu.
+[Starship.rs](https://starship.rs/) is how we are going to style our terminal.\
+Starship technically works on any terminal, even Powershell (🤮powerSMELL am I right??). But for this tutorial, we are going to be installing it on WSL2 Ubuntu.
 
 ## Enabling a Nerd Font in your terminal
 
-1. First, download a Nerd Font of your choosing from the Nerd Font [website](https://www.nerdfonts.com/font-downloads). I use *CaskaydiaCove Nerd Font.* Make sure to install the font after downloading, I usually download the Regular and Regular Mono variants and that's pretty much it.
-1. Enable the font in your terminal. This is easy in WSL2 Ubuntu.
+1. First, download a Nerd Font of your choosing from the Nerd Font [website](https://www.nerdfonts.com/font-downloads). Personally, I use the *CaskaydiaCove Nerd Font.* Make sure to install the font on your computer after downloading, I usually download the Regular and Regular Mono variants and that's pretty much it.
+1. Enable the font in your terminal. This is easy in WSL2 Ubuntu:
    1. Hit the downwards chevron next to the new tab button, and click Settings.
 
       {% Image
@@ -207,11 +207,139 @@ mkdir -p ~/.config
 touch ~/.config/starship.toml
 ```
 
-3. This is where we will put our config! You can find many starting configs online, or you can start with using [mine](https://github.com/bdelucia/Starship-Config/blob/main/arch/starship.toml). Once you save this file, you should see the styling immediately!
+3. This is where we will put our config! You can find many starting configs online, or you can start with using [mine](https://github.com/bdelucia/Starship-Config/blob/main/arch/starship.toml). Once you `starship.toml` configured, save the file, you should see the styling immediately!
 
 {% Image
    src="https://cdn.bobbeh.io/articles/0304bd35-197c-4bab-9679-83a21cabcbc2-image.png" /%}
 
-# (Optional) Making vim better with Neovim & NvChad
+# (Optional) Making Vim better with Neovim & NvChad
 
-# (Optional) Adding *Pokémon* with pokemon-colorscripts
+If you used Vim for any amount of time, you probably came to this conclusion:
+
+> It sucks.
+
+And honestly, even Vim users wouldn't blame you. But, there are ways to make Vim feel actually usable in the modern age.
+
+But what if I told you we could make Vim look like this? 👇
+
+{% Image
+   src="https://cdn.bobbeh.io/articles/7cac7328-3fbe-4aca-87f3-ae8b4d802e4c-image.png" /%}
+
+What makes it look pretty is a [Neovim](https://neovim.io/) config called [NvChad](https://nvchad.com/). Since Neovim is a prerequisite for NvChad, lets install that first!
+
+## Installing and using Neovim
+
+1. The first step to using Neovim is to install it. Who knew?? Use your package manager to install it, here are the commands for Ubuntu:
+
+```bash
+sudo add-apt-repository ppa:neovim-ppa/stable
+sudo apt update
+sudo apt install neovim
+```
+
+2. Usually, I alias `vim` to run `nvim`. This way, when you type something like: `vim .zshrc`, it will open it in Neovim. This is completely optional. But, if you want to do it, add this line to the end of your `.zshrc` file:
+
+```bash
+alias vim='nvim'
+```
+
+3. It's also helpful to change the EDITOR and VISUAL environment variables so if programs open up a text editor by themselves, it will open up Neovim instead of Vim. To do that, also add these lines to your `.zshrc` file:
+
+```bash
+export EDITOR='nvim'
+export VISUAL='nvim'
+```
+
+4. Now open up a new terminal instance and type vim. You should see Neovim pop-up instead!
+
+## Making things fun with NvChad
+
+1. Run this command:
+
+```bash
+git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
+```
+
+This will open up nvim, it should look like this when done:
+
+{% Image
+   src="https://cdn.bobbeh.io/articles/379c967a-3cea-4377-bede-a562e66f0b59-image.png" /%}
+
+2. Don't close out just yet! Type `:MasonInstallAll` and then `:TSInstallAll`
+1. Then you are pretty much done! Here are a few NvChad keybinds:
+
+- `Spacebar` - Opens up the hint window
+- `Spacebar + e` - Opens up the nvimtree window. You can close it with `Spacebar + x`
+- `Spacebar + t + h` - Opens up the **th**eme picker. You can see all the themes NvChad has by default [here](https://nvchad.com/themes).
+- `Spacebar + c + h` - Opens up a Neovim keybind **ch**eatsheet.
+- `Spacebar + r + n` - Toggles **r**elative line **n**umbers.
+
+NvChad has a ton more features, check them all out [here](https://nvchad.com/docs/features).
+
+# (Optional) Adding startup programs to your terminal
+
+Many people add programs like `neofetch` and `pokemon-colorscripts` to their terminals, so every time they open a new terminal, the program runs!
+
+Example of `neofetch` running on startup:
+
+{% Image
+   src="https://cdn.bobbeh.io/articles/b0875ce6-e263-4056-ba15-7027977bb6e9-image.png" /%}
+
+All you have to do is download the program you want to run and display, and add it to the end of your `.zshrc` file. Here's the full process for both!
+
+> 💡 PRO LINUX POWER USER TIP: You can use this line to instantly append lines to the end of your `.zshrc` file without having to open it in a text editor:
+
+```bash
+echo "{your command here}" >> ~/.zshrc
+```
+
+## neofetch
+
+1. Install neofetch with your package manager. For Ubuntu, the command would be:
+
+```bash
+sudo apt install neofetch
+```
+
+2. Open up `.zshrc`, and write neofetch at the end of the file:
+
+{% Image
+   src="https://cdn.bobbeh.io/articles/04025418-745b-41be-9c92-c208a52dc2a1-image.png" /%}
+
+3. Open up a new terminal. Bam!
+
+## pokemon-colorscripts
+
+1. Install `pokemon-colorscripts` by first cloning the repo...
+
+```bash
+git clone https://gitlab.com/phoneybadger/pokemon-colorscripts.git
+```
+
+2. ...going into the directory...
+
+```bash
+cd pokemon-colorscripts
+```
+
+3. ...and running the install script.
+
+```bash
+sudo ./install.sh
+```
+
+4. Now you can use the `pokemon-colorscripts` program. Go [here](https://gitlab.com/phoneybadger/pokemon-colorscripts/#usage) to see how to use it to display any set of Pokemon you'd like, or ask an LLM to generate the line for you if you are lazy. In my example, I will be displaying a shiny Reuniclus (my favorite Pokemon) with no title. The exact command for that is:
+
+```bash
+pokemon-colorscripts -n reuniclus -s --no-title
+```
+
+Adding that line to the end of my `.zshrc` file:
+
+{% Image
+   src="https://cdn.bobbeh.io/articles/36af3031-18c3-4276-a56e-490d13428fe2-image.png" /%}
+
+Now opening a new terminal, he's here!
+
+{% Image
+   src="https://cdn.bobbeh.io/articles/fa1c3d00-7a72-4167-9a90-b1610f0f51fb-image.png" /%}
