@@ -132,4 +132,10 @@ const { title, description, heroImage, pubDate, tags, headings } = Astro.props;
 			border-top: 1px solid var(--border-subtle, #d1cfcd);
 		}
 	}
+
+	@media (max-width: 767px) {
+		:global(main):has(.article-layout) {
+			padding: 0;
+		}
+	}
 </style>
