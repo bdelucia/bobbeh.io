@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties, type SyntheticEvent } from "react";
 import { fields } from "@keystatic/core";
 import { block } from "@keystatic/core/content-components";
 import {
@@ -65,14 +65,22 @@ function ImageNodeView(props: {
 		setPreviewUrl(preview);
 	};
 
+	// Keep interactive controls outside ProseMirror's contenteditable selection.
+	const stopEditorEvents = (event: SyntheticEvent) => {
+		event.stopPropagation();
+	};
+
 	return (
 		<div
+			contentEditable={false}
+			data-ignore-content=""
 			style={{
 				...styles.shell,
 				outline: props.isSelected
 					? "2px solid color-mix(in srgb, currentColor 45%, transparent)"
 					: "1px solid color-mix(in srgb, currentColor 18%, transparent)",
 			}}
+			onMouseDown={stopEditorEvents}
 		>
 			{displaySrc ? (
 				<div style={styles.previewFrame}>
@@ -107,14 +115,16 @@ function ImageNodeView(props: {
 						event.target.value = "";
 					}}
 				/>
-				<label style={styles.altLabel} htmlFor={altId}>
-					Alt
+				<div style={styles.altLabel}>
+					<label htmlFor={altId}>Alt</label>
 					<input
 						id={altId}
 						type="text"
 						value={props.value.alt ?? ""}
 						placeholder="Describe the image"
 						style={styles.altInput}
+						onMouseDown={stopEditorEvents}
+						onKeyDown={stopEditorEvents}
 						onChange={(event) => {
 							props.onChange({
 								src: props.value.src,
@@ -122,7 +132,7 @@ function ImageNodeView(props: {
 							});
 						}}
 					/>
-				</label>
+				</div>
 				<button type="button" style={styles.button} onClick={props.onRemove}>
 					Remove
 				</button>
@@ -197,6 +207,7 @@ const styles: Record<string, CSSProperties> = {
 		background: "color-mix(in srgb, currentColor 5%, transparent)",
 		color: "inherit",
 		fontFamily: font,
+		userSelect: "none",
 	},
 	previewFrame: {
 		position: "relative",
@@ -290,6 +301,7 @@ const styles: Record<string, CSSProperties> = {
 		fontSize: "0.8125rem",
 		fontWeight: 600,
 		color: "inherit",
+		userSelect: "none",
 	},
 	altInput: {
 		flex: 1,
@@ -302,6 +314,7 @@ const styles: Record<string, CSSProperties> = {
 		fontFamily: font,
 		fontSize: "0.8125rem",
 		fontWeight: 400,
+		userSelect: "text",
 	},
 	hiddenInput: {
 		display: "none",

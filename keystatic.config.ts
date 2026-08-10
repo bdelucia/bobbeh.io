@@ -40,13 +40,9 @@ export default config({
 					description: "Set when publishing this article",
 					defaultValue: { kind: "today" },
 				}),
-				tags: fields.multiselect({
+				tags: fields.array(fields.text({ label: "Tag" }), {
 					label: "Tags",
-					options: [
-						{ label: "Tutorial", value: "Tutorial" },
-						{ label: "Opinion", value: "Opinion" },
-						{ label: "AI", value: "AI" },
-					],
+					itemLabel: (props) => props.value || "New tag",
 				}),
 				heroImage: heroImageField("articles"),
 				content: fields.markdoc({
