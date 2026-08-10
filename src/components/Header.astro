@@ -9,15 +9,14 @@ const isHome = !pathname || pathname === '/' || pathname.replace(/\/+$/, '') ===
 
 <header class="site-header">
 	<nav>
-		<h2>
-			<a
-				href="/"
-				class:list={['site-logo', { active: isHome }]}
-				aria-current={isHome ? 'page' : undefined}
-			>
-				BD
-			</a>
-		</h2>
+		<a
+			href="/"
+			class:list={['site-logo', { active: isHome }]}
+			aria-current={isHome ? 'page' : undefined}
+			aria-label="Bobby DeLucia home"
+		>
+			BD
+		</a>
 		<div class="internal-links">
 			{NAV_ROUTES.map(({ href, label }) => (
 				<HeaderLink href={href}>{label}</HeaderLink>

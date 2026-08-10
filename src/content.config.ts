@@ -41,6 +41,7 @@ const uses = defineCollection({
 	loader: glob({ base: './src/content/uses', pattern: '**/*.mdoc' }),
 	schema: z.object({
 		title: z.string(),
+		description: z.string().default(''),
 	}),
 });
 

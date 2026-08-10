@@ -1,5 +1,6 @@
 ---
 import { getEntry, render } from 'astro:content';
+import { USES_DESCRIPTION } from '../consts';
 import ContentPage from '../layouts/ContentPage.astro';
 
 const page = await getEntry('uses', 'index');
@@ -8,8 +9,9 @@ if (!page) {
 }
 
 const { Content } = await render(page);
+const description = page.data.description || USES_DESCRIPTION;
 ---
 
-<ContentPage title={page.data.title}>
+<ContentPage title={page.data.title} description={description}>
 	<Content />
 </ContentPage>

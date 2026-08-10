@@ -17,10 +17,11 @@ interface HeadingGroup {
 
 const { pubDate, tags, headings, embedded = false } = Astro.props;
 const tocTitleId = embedded ? 'article-toc-title-embedded' : 'article-toc-title';
+// Content headings are demoted under the page <h1>, so TOC uses h2/h3.
 const tableOfContents = headings
-	.filter(({ depth }) => depth === 1 || depth === 2)
+	.filter(({ depth }) => depth === 2 || depth === 3)
 	.reduce<HeadingGroup[]>((groups, heading) => {
-		if (heading.depth === 1) {
+		if (heading.depth === 2) {
 			groups.push({ heading, children: [] });
 		} else if (groups.length > 0) {
 			groups.at(-1)?.children.push(heading);

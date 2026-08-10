@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /keystatic
+Disallow: /api/
+
+Sitemap: https://www.bobbeh.io/sitemap-index.xml

@@ -18,7 +18,10 @@ export default defineConfig({
 
   integrations: [
     mdx(),
-    sitemap(),
+    sitemap({
+      filter: (page) =>
+        !page.includes("/keystatic") && !page.includes("/api/"),
+    }),
     svelte(),
     icon(),
     react(),

@@ -2,14 +2,18 @@
 import { getCollection } from 'astro:content';
 import TripCard from '../../components/TripCard.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { pageTitle, TRIPS_DESCRIPTION } from '../../consts';
 import { isPublishedTrip, sortTripsByStartDate } from '../../utils/trips';
 
 const trips = (await getCollection('trips')).filter(isPublishedTrip).sort(sortTripsByStartDate);
 ---
 
-<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-	<section class="trip-list">
+<BaseLayout title={pageTitle('Trips')} description={TRIPS_DESCRIPTION}>
+	<section class="trip-list" aria-labelledby="trips-heading">
+		<header class="trip-list__header">
+			<h1 id="trips-heading">Trips</h1>
+			<p>{TRIPS_DESCRIPTION}</p>
+		</header>
 		<ul class="trip-list__grid">
 			{trips.map((trip, index) => (
 				<li>
@@ -25,6 +29,23 @@ const trips = (await getCollection('trips')).filter(isPublishedTrip).sort(sortTr
 		width: 960px;
 		max-width: 100%;
 		margin: 0 auto;
+	}
+
+	.trip-list__header {
+		margin-bottom: var(--size-5, 1.5rem);
+	}
+
+	.trip-list__header h1 {
+		margin: 0 0 var(--size-2, 0.5rem);
+		font-size: var(--font-size-2xl, 2rem);
+		line-height: var(--line-height-tight, 1.25);
+	}
+
+	.trip-list__header p {
+		margin: 0;
+		color: var(--text-muted, #55545f);
+		font-size: var(--font-size-lg, 1.125rem);
+		line-height: var(--line-height-normal, 1.5);
 	}
 
 	.trip-list__grid {

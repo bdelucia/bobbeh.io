@@ -63,6 +63,11 @@ export default config({
 			columns: ["title", "status", "startDate"],
 			schema: {
 				title: fields.slug({ name: { label: "Title" } }),
+				description: fields.text({
+					label: "Description",
+					description: "Short summary used for SEO and the trip page",
+					multiline: true,
+				}),
 				status: fields.select({
 					label: "Status",
 					options: [
@@ -96,6 +101,11 @@ export default config({
 			format: { contentField: "content" },
 			schema: {
 				title: fields.text({ label: "Title" }),
+				description: fields.text({
+					label: "Description",
+					description: "Short summary used for SEO",
+					multiline: true,
+				}),
 				content: fields.markdoc({
 					label: "Content",
 				}),

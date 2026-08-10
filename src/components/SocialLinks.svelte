@@ -14,7 +14,7 @@
 <div class="social-links">
 	{#each SOCIAL_LINKS as { href, label, platform } (platform)}
 		{@const Icon = icons[platform]}
-		<a {href} target="_blank" rel="noopener noreferrer">
+		<a {href} target="_blank" rel="me noopener noreferrer">
 			<span class="sr-only">{label}</span>
 			<Icon width="32" height="32" aria-hidden="true" />
 		</a>

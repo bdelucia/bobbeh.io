@@ -1,4 +1,5 @@
 ---
+import { pageTitle } from '../consts';
 import BaseLayout from './BaseLayout.astro';
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
 const { title, description = title } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={pageTitle(title)} description={description}>
 	<article>
 		<div class="prose">
 			<header class="title">

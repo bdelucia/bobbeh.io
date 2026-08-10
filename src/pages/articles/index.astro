@@ -3,14 +3,18 @@ import { getCollection } from 'astro:content';
 import ArticleCard from '../../components/ArticleCard.astro';
 import ArticlesToolbar from '../../components/ArticlesToolbar.svelte';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { ARTICLES_DESCRIPTION, pageTitle } from '../../consts';
 import { isPublishedArticle, sortArticlesByPublishDate } from '../../utils/articles';
 
 const posts = (await getCollection('articles')).filter(isPublishedArticle).sort(sortArticlesByPublishDate);
 ---
 
-<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-	<section class="article-list">
+<BaseLayout title={pageTitle('Articles')} description={ARTICLES_DESCRIPTION}>
+	<section class="article-list" aria-labelledby="articles-heading">
+		<header class="article-list__header">
+			<h1 id="articles-heading">Articles</h1>
+			<p>{ARTICLES_DESCRIPTION}</p>
+		</header>
 		<ArticlesToolbar client:load />
 		<ul id="article-list-grid" class="article-list__grid">
 			{posts.map((post, index) => (
@@ -27,6 +31,23 @@ const posts = (await getCollection('articles')).filter(isPublishedArticle).sort(
 		width: 960px;
 		max-width: 100%;
 		margin: 0 auto;
+	}
+
+	.article-list__header {
+		margin-bottom: var(--size-5, 1.5rem);
+	}
+
+	.article-list__header h1 {
+		margin: 0 0 var(--size-2, 0.5rem);
+		font-size: var(--font-size-2xl, 2rem);
+		line-height: var(--line-height-tight, 1.25);
+	}
+
+	.article-list__header p {
+		margin: 0;
+		color: var(--text-muted, #55545f);
+		font-size: var(--font-size-lg, 1.125rem);
+		line-height: var(--line-height-normal, 1.5);
 	}
 
 	.article-list__grid {

@@ -115,12 +115,6 @@ main {
 	justify-content: space-between;
 }
 
-.site-header h2 {
-	margin: 0;
-	font-size: var(--font-size-lg, 1.25rem);
-	font-weight: var(--font-weight-bold, 700);
-}
-
 .site-logo,
 .nav-link {
 	display: inline-block;
@@ -130,6 +124,12 @@ main {
 	transition:
 		background-color 0.15s ease,
 		color 0.15s ease;
+}
+
+.site-logo {
+	margin: 0;
+	font-size: var(--font-size-lg, 1.25rem);
+	font-weight: var(--font-weight-bold, 700);
 }
 
 .nav-link {

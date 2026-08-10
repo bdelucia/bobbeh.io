@@ -15,6 +15,6 @@ const trip = Astro.props;
 const { Content } = await render(trip);
 ---
 
-<TripPost {...trip.data}>
+<TripPost {...trip.data} slug={trip.id}>
 	<Content />
 </TripPost>
