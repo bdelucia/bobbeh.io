@@ -16,6 +16,7 @@ const articles = defineCollection({
 		pubDate: z.coerce.date().optional(),
 		updatedDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
+		heroImageAlt: z.string().default(''),
 		tags: z.array(z.string()).default([]),
 	}),
 });
@@ -34,6 +35,7 @@ const trips = defineCollection({
 		startDate: z.coerce.date(),
 		endDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
+		heroImageAlt: z.string().default(''),
 	}),
 });
 

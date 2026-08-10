@@ -10,6 +10,7 @@ import BaseLayout from './BaseLayout.astro';
 
 type Props = Pick<CollectionEntry<'articles'>['data'], 'title' | 'description'> & {
 	heroImage?: CollectionEntry<'articles'>['data']['heroImage'];
+	heroImageAlt?: CollectionEntry<'articles'>['data']['heroImageAlt'];
 	pubDate?: CollectionEntry<'articles'>['data']['pubDate'];
 	updatedDate?: CollectionEntry<'articles'>['data']['updatedDate'];
 	tags: CollectionEntry<'articles'>['data']['tags'];
@@ -17,7 +18,18 @@ type Props = Pick<CollectionEntry<'articles'>['data'], 'title' | 'description'> 
 	slug: string;
 };
 
-const { title, description, heroImage, pubDate, updatedDate, tags, headings, slug } = Astro.props;
+const {
+	title,
+	description,
+	heroImage,
+	heroImageAlt = '',
+	pubDate,
+	updatedDate,
+	tags,
+	headings,
+	slug,
+} = Astro.props;
+const imageAlt = heroImageAlt || title;
 const pageUrl = new URL(`/articles/${slug}/`, Astro.site).href;
 const imageUrl = heroImage
 	? new URL(heroImage, Astro.site).href
@@ -58,6 +70,7 @@ const jsonLd = {
 	title={pageTitle(title)}
 	description={description}
 	image={heroImage}
+	imageAlt={imageAlt}
 	type="article"
 	publishedTime={pubDate}
 	updatedTime={updatedDate}
@@ -67,7 +80,7 @@ const jsonLd = {
 	<div class="article-layout">
 		<article>
 			<div class="hero-image">
-				<SmartImage width={1020} height={510} src={heroImage} alt={title} />
+				<SmartImage width={1020} height={510} src={heroImage} alt={imageAlt} />
 			</div>
 			<div class="prose">
 				<div class="title">

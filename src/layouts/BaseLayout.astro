@@ -9,6 +9,7 @@ interface Props {
 	title: string;
 	description: string;
 	image?: ImageMetadata | string;
+	imageAlt?: string;
 	type?: 'website' | 'article';
 	publishedTime?: Date;
 	updatedTime?: Date;
@@ -16,7 +17,7 @@ interface Props {
 	jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description, image, type, publishedTime, updatedTime, tags, jsonLd } = Astro.props;
+const { title, description, image, imageAlt, type, publishedTime, updatedTime, tags, jsonLd } = Astro.props;
 ---
 
 <!doctype html>
@@ -26,6 +27,7 @@ const { title, description, image, type, publishedTime, updatedTime, tags, jsonL
 			title={title}
 			description={description}
 			image={image}
+			imageAlt={imageAlt}
 			type={type}
 			publishedTime={publishedTime}
 			updatedTime={updatedTime}

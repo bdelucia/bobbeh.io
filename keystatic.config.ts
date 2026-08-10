@@ -45,6 +45,12 @@ export default config({
 					itemLabel: (props) => props.value || "New tag",
 				}),
 				heroImage: heroImageField("articles"),
+				heroImageAlt: fields.text({
+					label: "Hero image alt text",
+					description:
+						"Describe the hero/card image for accessibility and SEO",
+					defaultValue: "",
+				}),
 				content: fields.markdoc({
 					label: "Content",
 					options: {
@@ -84,6 +90,12 @@ export default config({
 					label: "End date",
 				}),
 				heroImage: heroImageField("trips"),
+				heroImageAlt: fields.text({
+					label: "Hero image alt text",
+					description:
+						"Describe the hero/card image for accessibility and SEO",
+					defaultValue: "",
+				}),
 				content: fields.markdoc({
 					label: "Content",
 					options: {
