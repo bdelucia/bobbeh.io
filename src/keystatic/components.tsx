@@ -23,16 +23,34 @@ function ImageNodeView(props: {
 	const inputId = useId();
 	const altId = useId();
 	const onChangeRef = useRef(props.onChange);
-	const altRef = useRef(props.value.alt);
+	const valueRef = useRef(props.value);
+	const altDraftRef = useRef(props.value.alt);
+	const altFocusedRef = useRef(false);
 	onChangeRef.current = props.onChange;
-	altRef.current = props.value.alt;
+	valueRef.current = props.value;
 
+	const [altDraft, setAltDraft] = useState(props.value.alt);
 	const [uploadId, setUploadId] = useState<string | null>(null);
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 	const [error, setError] = useState<string | null>(null);
 
 	const uploading = uploadId !== null;
 	const displaySrc = previewUrl ?? props.value.src;
+	altDraftRef.current = altDraft;
+
+	// Sync alt from editor state only while the field isn't being edited.
+	// Writing on every keystroke dispatches a ProseMirror transaction that steals focus.
+	useEffect(() => {
+		if (!altFocusedRef.current) {
+			setAltDraft(props.value.alt);
+		}
+	}, [props.value.alt]);
+
+	const commitAlt = (alt: string) => {
+		const current = valueRef.current;
+		if (alt === current.alt) return;
+		onChangeRef.current({ src: current.src, alt });
+	};
 
 	useEffect(() => {
 		if (!uploadId) return;
@@ -40,7 +58,7 @@ function ImageNodeView(props: {
 			setUploadId(null);
 			setPreviewUrl(null);
 			if (result.url) {
-				onChangeRef.current({ src: result.url, alt: altRef.current });
+				onChangeRef.current({ src: result.url, alt: altDraftRef.current });
 				setError(null);
 			} else if (result.error) {
 				setError(result.error);
@@ -56,7 +74,7 @@ function ImageNodeView(props: {
 			props.folder,
 			{
 				onSuccess: (url) => {
-					onChangeRef.current({ src: url, alt: altRef.current });
+					onChangeRef.current({ src: url, alt: altDraftRef.current });
 				},
 				onError: (message) => setError(message),
 			},
@@ -84,7 +102,7 @@ function ImageNodeView(props: {
 		>
 			{displaySrc ? (
 				<div style={styles.previewFrame}>
-					<img src={displaySrc} alt={props.value.alt || ""} style={styles.preview} />
+					<img src={displaySrc} alt={altDraft || ""} style={styles.preview} />
 					{uploading ? (
 						<div style={styles.overlay}>
 							<span style={styles.overlayText}>Uploading to R2…</span>
@@ -120,16 +138,22 @@ function ImageNodeView(props: {
 					<input
 						id={altId}
 						type="text"
-						value={props.value.alt ?? ""}
+						value={altDraft}
 						placeholder="Describe the image"
 						style={styles.altInput}
 						onMouseDown={stopEditorEvents}
 						onKeyDown={stopEditorEvents}
+						onFocus={() => {
+							altFocusedRef.current = true;
+						}}
 						onChange={(event) => {
-							props.onChange({
-								src: props.value.src,
-								alt: event.target.value,
-							});
+							setAltDraft(event.target.value);
+						}}
+						onBlur={(event) => {
+							altFocusedRef.current = false;
+							const alt = event.currentTarget.value;
+							setAltDraft(alt);
+							commitAlt(alt);
 						}}
 					/>
 				</div>
