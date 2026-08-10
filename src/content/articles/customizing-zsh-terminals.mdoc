@@ -25,12 +25,15 @@ If you are using the `bash` shell, I highly recommend switching to `zsh`. This w
 
 {% Image
    src="https://cdn.bobbeh.io/articles/5a81b1f1-ddad-473d-81c9-cb07b9128fb3-image.png"
-   alt="hhh" /%}
+   alt="zsh autosuggestions showing a gray command suggestion after typing"
+/%}
 
 - Completions: gives a list of context-aware commands. For example, if we are typing `git stash` and then hit `Tab`:
 
   {% Image
-     src="https://cdn.bobbeh.io/articles/35bd9d76-0ab7-495f-a7bd-0993eda2e258-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/35bd9d76-0ab7-495f-a7bd-0993eda2e258-image.png"
+   alt="zsh completions menu for git stash options after pressing Tab"
+/%}
 
   We get a comprehensive list of all the options available to use!
 
@@ -39,12 +42,16 @@ If you are using the `bash` shell, I highly recommend switching to `zsh`. This w
   ✅ Will run:
 
   {% Image
-     src="https://cdn.bobbeh.io/articles/e6a1b401-e32d-4058-8ed6-5d7732fe8278-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/e6a1b401-e32d-4058-8ed6-5d7732fe8278-image.png"
+   alt="zsh syntax highlighting showing a valid command in green"
+/%}
 
   ❌ Won't run:
 
   {% Image
-     src="https://cdn.bobbeh.io/articles/e3436703-69fc-4172-8167-01b8c7ef4bda-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/e3436703-69fc-4172-8167-01b8c7ef4bda-image.png"
+   alt="zsh syntax highlighting showing an invalid command in red"
+/%}
 
 ---
 
@@ -82,7 +89,9 @@ chsh -s $(which zsh)
    > *It will ask you to configure `.zshrc`, just press `q` to close out of it. `oh-my-zsh` will create this file.*
 
    {% Image
-      src="https://cdn.bobbeh.io/articles/d84734c9-b1de-4f85-9625-daf9b09989f9-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/d84734c9-b1de-4f85-9625-daf9b09989f9-image.png"
+   alt="Terminal prompt asking to configure a new .zshrc file"
+/%}
 
 ## Installing oh-my-zsh + plugins
 
@@ -97,7 +106,9 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 You should notice the terminal got a little fancy after doing that!
 
 {% Image
-   src="https://cdn.bobbeh.io/articles/4dc60ca2-07f5-4f74-85c5-c10f61002919-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/4dc60ca2-07f5-4f74-85c5-c10f61002919-image.png"
+   alt="Terminal after installing oh-my-zsh with updated prompt styling"
+/%}
 
 2. Install some plugins!
 
@@ -128,7 +139,9 @@ fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 Should look like this:
 
 {% Image
-   src="https://cdn.bobbeh.io/articles/6576733d-83a5-41cf-9070-88c865bbb61a-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/6576733d-83a5-41cf-9070-88c865bbb61a-image.png"
+   alt=".zshrc snippet adding zsh-completions to fpath"
+/%}
 
 3. Now all we have to do is enable the plugins! \
    In `.zshrc`, at the bottom of the file you will see a plugins=(git). Replace that with this:
@@ -159,17 +172,23 @@ Starship technically works on any terminal, even Powershell (🤮powerSMELL am I
    1. Hit the downwards chevron next to the new tab button, and click Settings.
 
       {% Image
-         src="https://cdn.bobbeh.io/articles/6527aa40-5461-4de6-901e-1fb6a3e4e1cb-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/6527aa40-5461-4de6-901e-1fb6a3e4e1cb-image.png"
+   alt="Windows Terminal settings menu opened from the tab chevron"
+/%}
 
    1. Then go to: Ubuntu > Appearance
 
       {% Image
-         src="https://cdn.bobbeh.io/articles/2a12f9dc-e909-44bf-81a8-cb8d6decb817-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/2a12f9dc-e909-44bf-81a8-cb8d6decb817-image.png"
+   alt="Windows Terminal Ubuntu Appearance settings panel"
+/%}
 
    1. Set the font to your Nerd Font, then hit Save.
 
       {% Image
-         src="https://cdn.bobbeh.io/articles/fbff837f-11e7-4d14-bac6-a9fc4b62b96a-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/fbff837f-11e7-4d14-bac6-a9fc4b62b96a-image.png"
+   alt="Windows Terminal font picker set to CaskaydiaCove Nerd Font"
+/%}
 
 ## Installing Starship.rs
 
@@ -188,12 +207,16 @@ eval "$(starship init zsh)"
 Should look something like this:
 
 {% Image
-   src="https://cdn.bobbeh.io/articles/e5b76274-04fb-4cb0-a132-d927e7ae4c0b-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/e5b76274-04fb-4cb0-a132-d927e7ae4c0b-image.png"
+   alt=".zshrc with starship init zsh eval line at the end"
+/%}
 
 Now open up a new terminal, and you should see Starship's default styling applied!
 
 {% Image
-   src="https://cdn.bobbeh.io/articles/9536cc55-5b20-4dae-9341-97ae98d4de32-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/9536cc55-5b20-4dae-9341-97ae98d4de32-image.png"
+   alt="Terminal showing Starship default prompt styling"
+/%}
 
 ## Configuring Starship.rs
 
@@ -212,7 +235,9 @@ touch ~/.config/starship.toml
 3. This is where we will put our config! You can find many starting configs online, or you can start with using [mine](https://github.com/bdelucia/Starship-Config/blob/main/arch/starship.toml). Once you `starship.toml` configured, save the file, you should see the styling immediately!
 
 {% Image
-   src="https://cdn.bobbeh.io/articles/0304bd35-197c-4bab-9679-83a21cabcbc2-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/0304bd35-197c-4bab-9679-83a21cabcbc2-image.png"
+   alt="Terminal with a customized Starship prompt"
+/%}
 
 # (Optional) Making Vim better with Neovim & NvChad
 
@@ -225,7 +250,9 @@ And honestly, even Vim users wouldn't blame you.
 But what if I told you we could make Vim look like this? 👇
 
 {% Image
-   src="https://cdn.bobbeh.io/articles/7cac7328-3fbe-4aca-87f3-ae8b4d802e4c-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/7cac7328-3fbe-4aca-87f3-ae8b4d802e4c-image.png"
+   alt="Neovim with NvChad theme and dashboard UI"
+/%}
 
 What makes it look pretty is a [Neovim](https://neovim.io/) config called [NvChad](https://nvchad.com/). Since Neovim is a prerequisite for NvChad, lets install that first!
 
@@ -265,7 +292,9 @@ git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
 This will open up nvim, it should look like this when done:
 
 {% Image
-   src="https://cdn.bobbeh.io/articles/379c967a-3cea-4377-bede-a562e66f0b59-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/379c967a-3cea-4377-bede-a562e66f0b59-image.png"
+   alt="Neovim after cloning the NvChad starter config"
+/%}
 
 2. Don't close out just yet! Type `:MasonInstallAll` and then `:TSInstallAll`
 1. Then you are pretty much done! Here are a few NvChad keybinds:
@@ -285,7 +314,9 @@ Many people add programs like `neofetch` and `pokemon-colorscripts` to their ter
 Example of `neofetch` running on startup:
 
 {% Image
-   src="https://cdn.bobbeh.io/articles/b0875ce6-e263-4056-ba15-7027977bb6e9-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/b0875ce6-e263-4056-ba15-7027977bb6e9-image.png"
+   alt="Terminal startup showing neofetch system info output"
+/%}
 
 All you have to do is download the program you want to run and display, and add it to the end of your `.zshrc` file. Here's the full process for both!
 
@@ -306,7 +337,9 @@ sudo apt install neofetch
 2. Open up `.zshrc`, and write neofetch at the end of the file:
 
 {% Image
-   src="https://cdn.bobbeh.io/articles/04025418-745b-41be-9c92-c208a52dc2a1-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/04025418-745b-41be-9c92-c208a52dc2a1-image.png"
+   alt=".zshrc with neofetch added at the end of the file"
+/%}
 
 3. Open up a new terminal. Bam!
 
@@ -339,9 +372,13 @@ pokemon-colorscripts -n reuniclus -s --no-title
 Adding that line to the end of my `.zshrc` file:
 
 {% Image
-   src="https://cdn.bobbeh.io/articles/36af3031-18c3-4276-a56e-490d13428fe2-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/36af3031-18c3-4276-a56e-490d13428fe2-image.png"
+   alt=".zshrc with pokemon-colorscripts command for shiny Reuniclus"
+/%}
 
 Now opening a new terminal, we see him!
 
 {% Image
-   src="https://cdn.bobbeh.io/articles/fa1c3d00-7a72-4167-9a90-b1610f0f51fb-image.png" /%}
+   src="https://cdn.bobbeh.io/articles/fa1c3d00-7a72-4167-9a90-b1610f0f51fb-image.png"
+   alt="Terminal startup showing a shiny Reuniclus pokemon colorscript"
+/%}

@@ -118,6 +118,10 @@ function ImageNodeView(props: {
 				</label>
 			)}
 
+			{displaySrc && altDraft.trim() ? (
+				<p style={styles.captionPreview}>{altDraft.trim()}</p>
+			) : null}
+
 			<div style={styles.toolbar}>
 				<label style={styles.button} htmlFor={inputId}>
 					{uploading ? "Uploading…" : displaySrc ? "Replace" : "Upload"}
@@ -134,12 +138,12 @@ function ImageNodeView(props: {
 					}}
 				/>
 				<div style={styles.altLabel}>
-					<label htmlFor={altId}>Alt</label>
+					<label htmlFor={altId}>Alt / caption</label>
 					<input
 						id={altId}
 						type="text"
 						value={altDraft}
-						placeholder="Describe the image"
+						placeholder="Describe the image (shown under it on the site)"
 						style={styles.altInput}
 						onMouseDown={stopEditorEvents}
 						onKeyDown={stopEditorEvents}
@@ -172,11 +176,14 @@ export function contentImageComponents(folder: string) {
 		Image: Object.assign(
 			block({
 				label: "Image",
-				description: "Upload an image to Cloudflare R2",
+				description:
+					"Upload an image to Cloudflare R2. Alt text is also shown as a caption under the image.",
 				schema: {
 					src: fields.text({ label: "Image URL" }),
 					alt: fields.text({
-						label: "Alt text",
+						label: "Alt text / caption",
+						description:
+							"Used for accessibility and shown as a figcaption under the image",
 						defaultValue: "",
 					}),
 				},
@@ -250,6 +257,14 @@ const styles: Record<string, CSSProperties> = {
 		width: "auto",
 		height: "auto",
 		objectFit: "contain",
+	},
+	captionPreview: {
+		margin: "0.25rem 0 0",
+		color: "color-mix(in srgb, currentColor 65%, transparent)",
+		fontSize: "0.8125rem",
+		lineHeight: 1.4,
+		textAlign: "center",
+		fontFamily: font,
 	},
 	overlay: {
 		position: "absolute",
