@@ -16,7 +16,7 @@ const href = `/trips/${trip.id}/`;
 <article class:list={['trip-card', { 'trip-card--featured': featured }]}>
 	<a href={href} class="trip-card__link">
 		<div class="trip-card__image">
-			<SmartImage width={720} height={360} src={heroImage} alt="" />
+			<SmartImage width={720} height={360} src={heroImage} alt="" quality={100} />
 		</div>
 		<div class="trip-card__body">
 			<h2 class="trip-card__title">{title}</h2>

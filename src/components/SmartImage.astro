@@ -10,9 +10,11 @@ interface Props {
 	width: number;
 	height: number;
 	class?: string;
+	/** 1–100. CDN transform quality; default 80. */
+	quality?: number;
 }
 
-const { src, alt = '', width, height, class: className } = Astro.props;
+const { src, alt = '', width, height, class: className, quality = 80 } = Astro.props;
 const image = src ?? ArticlePlaceholderImage;
 ---
 
@@ -24,7 +26,7 @@ const image = src ?? ArticlePlaceholderImage;
 				width,
 				height,
 				format: 'auto',
-				quality: 80,
+				quality,
 			})}
 			alt={alt}
 			width={width}

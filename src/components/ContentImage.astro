@@ -7,10 +7,18 @@ interface Props {
 }
 
 const { src, alt = '' } = Astro.props;
+// Trip photos are stored under /trips/ — serve at full quality.
+const isTripImage = (() => {
+	try {
+		return new URL(src).pathname.includes('/trips/');
+	} catch {
+		return src.includes('/trips/');
+	}
+})();
 const optimizedSrc = optimizeCdnImageUrl(src, {
 	width: 1200,
 	format: 'auto',
-	quality: 80,
+	quality: isTripImage ? 100 : 80,
 });
 ---
 
